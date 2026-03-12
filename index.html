@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customer Satisfaction Dashboard</title>
+<title>CSAT Service Satisfaction Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -290,9 +290,9 @@
 <body>
 
 <div class="dashboard-header">
-  <div class="dashboard-title">📊 Customer Satisfaction Dashboard <span style="font-size:13px;color:var(--text-muted);font-weight:400">(By Service)</span></div>
+  <div class="dashboard-title">📊 CSAT Service Satisfaction Dashboard <span style="font-size:13px;color:var(--text-muted);font-weight:400">(By Service)</span></div>
   <div class="legend-row">
-    <div class="legend-item"><span class="legend-dot dot-green"></span><span class="text-green">≥ 90.00%</span></div>
+    <div class="legend-item"><span class="legend-dot dot-green"></span><span class="text-green">≥ 89.00%</span></div>
     <div class="legend-item"><span class="legend-dot dot-yellow"></span><span class="text-yellow">80.00–88.99%</span></div>
     <div class="legend-item"><span class="legend-dot dot-red"></span><span class="text-red">≤ 79.99%</span></div>
   </div>
@@ -411,7 +411,7 @@ let trendChart = null;
 function parsePercent(val) {
   if (val === null || val === undefined || val === '') return null;
   const str = String(val).replace('%','').trim();
-  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีการสำรวจ' || str === '-' || str === '') return null;
+  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีผล' || str === '-' || str === '') return null;
   const n = parseFloat(str);
   return isNaN(n) ? null : n > 1 ? n : n * 100;
 }
@@ -532,13 +532,13 @@ function getScore(s, month) {
 
 function scoreClass(v) {
   if (v === null || v === undefined) return 'score-neutral';
-  if (v >= 90) return 'score-green';
+  if (v >= 89) return 'score-green';
   if (v >= 80) return 'score-yellow';
   return 'score-red';
 }
 
 function scoreColorVar(v) {
-  if (v >= 90) return '#56d97b';
+  if (v >= 89) return '#56d97b';
   if (v >= 80) return '#f0c040';
   return '#e85c4a';
 }
@@ -581,20 +581,21 @@ function applyFilters() {
 function renderKPI(data, months, rawData) {
   // ข้อ 3: คะแนนรวม Total = F1 (masterTotal) เสมอ ไม่ขึ้นกับ filter
   const totalVal = rawData.masterTotal !== null ? rawData.masterTotal : 0;
-  const totalClass = totalVal >= 90 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
-  const totalTextClass = totalVal >= 90 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
-//อ้างอิง Col F (s.total) โดยตรง
+  const totalClass = totalVal >= 89 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
+  const totalTextClass = totalVal >= 89 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
+
+  // ข้อ 1: นับจาก data.length (ผ่าน filter แล้ว) — ถูกต้องเพราะ fetchSheet กรอง Col A แล้ว
+  const count = data.length;
+
+  // ข้อ 2: อ้างอิง Col F (s.total) โดยตรง
   const getColF = (s) => {
-    if (months.length === 1) return getScore(s, months[0]);
-    return s.total;
+    if (months.length === 1) return getScore(s, months[0]); // filter เดือนเดียวใช้คะแนนเดือนนั้น
+    return s.total; // ทั้งหมดใช้ Col F
   };
 
   const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 89; }).length;
   const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 89; }).length;
   const bad  = data.filter(s => { const v = getColF(s); return v !== null && v < 80; }).length;
-
-  // จำนวนทั้งหมด = good + mid + bad
-  const count = good + mid + bad;
 
   document.getElementById('kpiRow').innerHTML = `
     <div class="kpi-card ${totalClass}">
@@ -610,7 +611,7 @@ function renderKPI(data, months, rawData) {
     <div class="kpi-card green">
       <div class="kpi-label">จำนวน Service<br>ที่ได้คะแนนดี</div>
       <div class="kpi-value text-green">${good}</div>
-      <div class="kpi-sub">≥ 90.00%</div>
+      <div class="kpi-sub">≥ 89.00%</div>
     </div>
     <div class="kpi-card yellow">
       <div class="kpi-label">จำนวน Service<br>ที่ได้คะแนนปานกลาง</div>
@@ -665,7 +666,7 @@ function renderTable(data) {
     const totalVal = s.total;
     const monthCells = [1,2,3,4,5,6,7,8,9,10,11,12].map(m => {
       const v = getScore(s, m);
-      if (v === null) return `<td><span class="score-cell score-neutral">ไม่มีการสำรวจ</span></td>`;
+      if (v === null) return `<td><span class="score-cell score-neutral">ไม่มีผล</span></td>`;
       return `<td><span class="score-cell ${scoreClass(v)}">${v.toFixed(2)}%</span></td>`;
     }).join('');
 
