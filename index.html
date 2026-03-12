@@ -516,8 +516,9 @@
   </div>
   <span class="type-label">ประเภทแบบสำรวจ :</span>
   <div class="tag-group" id="tagGroup">
-    <span class="tag active" data-type="all" onclick="selectTag(this)">All CSAT Survey</span>
-    <span class="tag" data-type="พัฒนาเอง" onclick="selectTag(this)">พัฒนาเอง</span>
+    <span class="tag active" data-type="all" onclick="selectTag(this)">All</span>
+    <span class="tag active" data-type="CSAT Survey" onclick="selectTag(this)">CSAT Survey</span>
+    <span class="tag" data-type="พัฒนาระบบประเมินเอง" onclick="selectTag(this)">พัฒนาระบบประเมินเอง</span>
     <span class="tag" data-type="google form" onclick="selectTag(this)">Google Form</span>
   </div>
 </div>
@@ -583,11 +584,11 @@ const SHEET_NAMES = {
 };
 
 // Column indices (0-based) ใน Google Sheet
-// B=1(name), C=2(source), F=5(total), I=8(Jan), L=11(Feb), O=14(Mar),
+// A=0(order), B=1(name), C=2(source), F=5(total), I=8(Jan), L=11(Feb), O=14(Mar),
 // R=17(Apr), U=20(May), X=23(Jun), AA=26(Jul), AD=29(Aug),
 // AG=32(Sep), AJ=35(Oct), AM=38(Nov), AP=41(Dec)
 const COL = {
-  name: 1, source: 2, total: 5,
+  order: 0, name: 1, source: 2, total: 5,
   months: [8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41]
 };
 
@@ -619,21 +620,25 @@ async function fetchSheet(year) {
     const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
     const rows = json.table.rows;
     const data = [];
-    rows.forEach(row => {
+    rows.forEach((row, rowIndex) => {
       if (!row.c) return;
       const getName = (i) => row.c[i] ? (row.c[i].v || '') : '';
       const name = String(getName(COL.name)).trim();
       if (!name || name === 'Service Name' || name === '') return;
+      // ลำดับจาก Col A — ถ้าไม่มีให้ใช้ rowIndex แทน
+      const orderRaw = row.c[COL.order] ? row.c[COL.order].v : null;
+      const order = orderRaw !== null ? String(orderRaw).trim() : String(rowIndex);
+      const uid = `${order}_${rowIndex}`; // unique key กัน duplicate ชื่อ
       const source = String(getName(COL.source)).trim();
       const totalRaw = row.c[COL.total] ? row.c[COL.total].v : null;
       const total = parsePercent(totalRaw);
       const scores = {};
       COL.months.forEach((colIdx, i) => {
         const cell = row.c[colIdx];
-        const val = cell ? cell.v : null;
+        const val = cell ? cell.v : null;                                       
         scores[i + 1] = parsePercent(val);
       });
-      data.push({ name, source, total, scores, company: '' });
+      data.push({ uid, order, name, source, total, scores });
     });
     return data;
   } catch(e) {
@@ -799,7 +804,7 @@ function renderTop5(data, months) {
     <div class="top5-item">
       <div class="top5-rank rank-${i+1}">${i+1}</div>
       <div class="top5-info">
-        <div class="top5-name">${s.name}</div>
+        <div class="top5-name">${s.name} <span style="font-size:10px;color:var(--text-dim)">#${s.order}</span></div>
         <div class="top5-company">${s.source}</div>
         <div class="top5-bar"><div class="top5-bar-fill" style="width:${s.avg}%"></div></div>
       </div>
@@ -826,6 +831,7 @@ function renderTable(data, months) {
 
     return `
       <tr>
+        <td style="text-align:center;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;font-size:11px">${s.order}</td>
         <td style="font-weight:500">${s.name}</td>
         <td><span class="source-badge ${srcClass}">${s.source}</span></td>
         <td><span class="score-cell ${scoreClass(totalVal)}">${totalVal !== null ? totalVal.toFixed(2)+'%' : '—'}</span></td>
@@ -927,6 +933,7 @@ function selectTag(el) {
 // UPDATE TABLE HEADER (remove company col since it's in source)
 // ============================================================
 document.querySelector('thead tr').innerHTML = `
+  <th>#</th>
   <th>Service Name</th>
   <th>Source Data</th>
   <th>Total %</th>
