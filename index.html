@@ -411,7 +411,7 @@ let trendChart = null;
 function parsePercent(val) {
   if (val === null || val === undefined || val === '') return null;
   const str = String(val).replace('%','').trim();
-  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีผล' || str === '-' || str === '') return null;
+  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีการสำรวจ' || str === '-' || str === '') return null;
   const n = parseFloat(str);
   return isNaN(n) ? null : n > 1 ? n : n * 100;
 }
@@ -666,7 +666,7 @@ function renderTable(data) {
     const totalVal = s.total;
     const monthCells = [1,2,3,4,5,6,7,8,9,10,11,12].map(m => {
       const v = getScore(s, m);
-      if (v === null) return `<td><span class="score-cell score-neutral">ไม่มีผล</span></td>`;
+      if (v === null) return `<td><span class="score-cell score-neutral">ไม่มีการสำรวจ</span></td>`;
       return `<td><span class="score-cell ${scoreClass(v)}">${v.toFixed(2)}%</span></td>`;
     }).join('');
 
