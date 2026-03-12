@@ -427,66 +427,71 @@ function parseNumber(val) {
 // ============================================================
 async function fetchSheet(year) {
   const sheetName = SHEET_NAMES[year];
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-  try {
-    const res = await fetch(url);
+  const base = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+
+  const parseFn = async (res) => {
     const text = await res.text();
-    const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-    const rows = json.table.rows;
-    const data = [];
+    return JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+  };
 
-    // masterTotal จาก F1 (rowIndex=0)
-    let masterTotal = null;
-    // chartMonthlyTotals: คะแนน Total รายเดือนสำหรับกราฟ (คำนวณจาก J/K, M/N, ...)
+  try {
+    // ดึง 2 ครั้งแยกกัน: row1=summary, row3+=service (ข้าม row2 header)
+    const [resSummary, resData] = await Promise.all([
+      fetch(`${base}&range=A1:AQ1`),
+      fetch(`${base}&range=A3:AQ200`)
+    ]);
+    const [jsonSummary, jsonData] = await Promise.all([parseFn(resSummary), parseFn(resData)]);
+
+    // ── Summary row (row 1): F1=masterTotal, J1/K1...=chart totals ──
+    const sRow = jsonSummary.table.rows[0];
+    const getSVal = (i) => (sRow && sRow.c && sRow.c[i] && sRow.c[i].v !== undefined) ? sRow.c[i].v : null;
+
+    const masterTotal = parsePercent(getSVal(5)); // F1
+
     const chartMonthlyTotals = new Array(12).fill(null);
+    const chartCols = [
+      [9,10],[12,13],[15,16],[18,19],[21,22],[24,25],
+      [27,28],[30,31],[33,34],[36,37],[39,40],[42,43]
+    ];
+    chartCols.forEach(([n, d], i) => {
+      const num = parseNumber(getSVal(n));
+      const den = parseNumber(getSVal(d));
+      if (num !== null && den !== null && den > 0) {
+        chartMonthlyTotals[i] = parseFloat(((num / den) * 100).toFixed(2));
+      }
+    });
 
-    rows.forEach((row, rowIndex) => {
+    // ── Data rows (row 3+): service จริง ──
+    const data = [];
+    jsonData.table.rows.forEach((row, rowIndex) => {
       if (!row.c) return;
       const getVal = (i) => (row.c[i] && row.c[i].v !== undefined) ? row.c[i].v : null;
 
-      if (rowIndex === 0) {
-        // F1 = คะแนนรวมทุก service ทุกเดือน
-        masterTotal = parsePercent(getVal(COL.total));
-
-        // ดึงคะแนน Total รายเดือน (J+K, M+N, ...) จาก row แรกนี้เลย
-        COL.chartMonths.forEach(([numCol, denCol], i) => {
-          const num = parseNumber(getVal(numCol));
-          const den = parseNumber(getVal(denCol));
-          if (num !== null && den !== null && den > 0) {
-            chartMonthlyTotals[i] = parseFloat(((num / den) * 100).toFixed(2));
-          }
-        });
-        return; // row แรกไม่ใช่ service
-      }
-
-      // นับเฉพาะแถวที่ Col A เป็นตัวเลข = service จริงๆ
-      const orderRaw = getVal(COL.order);
+      // Col A ต้องเป็นตัวเลขเท่านั้น
+      const orderRaw = getVal(0);
       if (orderRaw === null || isNaN(Number(orderRaw))) return;
-      const order = String(orderRaw).trim();
+      const order = Number(orderRaw);
 
-      const name = String(getVal(COL.name) || '').trim();
+      const name = String(getVal(1) || '').trim();
       if (!name) return;
 
       const uid = `${order}_${rowIndex}`;
-      const source = String(getVal(COL.source) || '').trim();
-      const total = parsePercent(getVal(COL.total)); // Col F ของ service นี้
+      const source = String(getVal(2) || '').trim();
+      const total = parsePercent(getVal(5));
 
       const scores = {};
-      COL.serviceMonths.forEach((colIdx, i) => {
+      [8,11,14,17,20,23,26,29,32,35,38,41].forEach((colIdx, i) => {
         scores[i + 1] = parsePercent(getVal(colIdx));
       });
 
-      data.push({ uid, order: Number(order), name, source, total, scores });
+      data.push({ uid, order, name, source, total, scores });
     });
 
-    // เรียงตาม order
     data.sort((a, b) => a.order - b.order);
-
-    // แนบข้อมูลพิเศษไปกับ array
     data.masterTotal = masterTotal;
     data.chartMonthlyTotals = chartMonthlyTotals;
-
     return data;
+
   } catch(e) {
     console.error('Fetch error for', year, e);
     const empty = [];
