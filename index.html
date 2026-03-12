@@ -583,19 +583,18 @@ function renderKPI(data, months, rawData) {
   const totalVal = rawData.masterTotal !== null ? rawData.masterTotal : 0;
   const totalClass = totalVal >= 90 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
   const totalTextClass = totalVal >= 90 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
-
-  // ข้อ 1: นับจาก data.length (ผ่าน filter แล้ว) — ถูกต้องเพราะ fetchSheet กรอง Col A แล้ว
-  const count = data.length;
-
-  // ข้อ 2: อ้างอิง Col F (s.total) โดยตรง
+//อ้างอิง Col F (s.total) โดยตรง
   const getColF = (s) => {
-    if (months.length === 1) return getScore(s, months[0]); // filter เดือนเดียวใช้คะแนนเดือนนั้น
-    return s.total; // ทั้งหมดใช้ Col F
+    if (months.length === 1) return getScore(s, months[0]);
+    return s.total;
   };
 
-  const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 90; }).length;
-  const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 90; }).length;
+  const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 89; }).length;
+  const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 89; }).length;
   const bad  = data.filter(s => { const v = getColF(s); return v !== null && v < 80; }).length;
+
+  // จำนวนทั้งหมด = good + mid + bad
+  const count = good + mid + bad;
 
   document.getElementById('kpiRow').innerHTML = `
     <div class="kpi-card ${totalClass}">
