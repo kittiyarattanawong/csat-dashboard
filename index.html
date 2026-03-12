@@ -292,7 +292,7 @@
 <div class="dashboard-header">
   <div class="dashboard-title">📊 Customer Satisfaction Dashboard <span style="font-size:13px;color:var(--text-muted);font-weight:400">(By Service)</span></div>
   <div class="legend-row">
-    <div class="legend-item"><span class="legend-dot dot-green"></span><span class="text-green">≥ 89.00%</span></div>
+    <div class="legend-item"><span class="legend-dot dot-green"></span><span class="text-green">≥ 90.00%</span></div>
     <div class="legend-item"><span class="legend-dot dot-yellow"></span><span class="text-yellow">80.00–88.99%</span></div>
     <div class="legend-item"><span class="legend-dot dot-red"></span><span class="text-red">≤ 79.99%</span></div>
   </div>
@@ -532,13 +532,13 @@ function getScore(s, month) {
 
 function scoreClass(v) {
   if (v === null || v === undefined) return 'score-neutral';
-  if (v >= 89) return 'score-green';
+  if (v >= 90) return 'score-green';
   if (v >= 80) return 'score-yellow';
   return 'score-red';
 }
 
 function scoreColorVar(v) {
-  if (v >= 89) return '#56d97b';
+  if (v >= 90) return '#56d97b';
   if (v >= 80) return '#f0c040';
   return '#e85c4a';
 }
@@ -581,8 +581,8 @@ function applyFilters() {
 function renderKPI(data, months, rawData) {
   // ข้อ 3: คะแนนรวม Total = F1 (masterTotal) เสมอ ไม่ขึ้นกับ filter
   const totalVal = rawData.masterTotal !== null ? rawData.masterTotal : 0;
-  const totalClass = totalVal >= 89 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
-  const totalTextClass = totalVal >= 89 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
+  const totalClass = totalVal >= 90 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
+  const totalTextClass = totalVal >= 90 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
 
   // ข้อ 1: นับจาก data.length (ผ่าน filter แล้ว) — ถูกต้องเพราะ fetchSheet กรอง Col A แล้ว
   const count = data.length;
@@ -593,8 +593,8 @@ function renderKPI(data, months, rawData) {
     return s.total; // ทั้งหมดใช้ Col F
   };
 
-  const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 89; }).length;
-  const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 89; }).length;
+  const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 90; }).length;
+  const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 90; }).length;
   const bad  = data.filter(s => { const v = getColF(s); return v !== null && v < 80; }).length;
 
   document.getElementById('kpiRow').innerHTML = `
@@ -611,7 +611,7 @@ function renderKPI(data, months, rawData) {
     <div class="kpi-card green">
       <div class="kpi-label">จำนวน Service<br>ที่ได้คะแนนดี</div>
       <div class="kpi-value text-green">${good}</div>
-      <div class="kpi-sub">≥ 89.00%</div>
+      <div class="kpi-sub">≥ 90.00%</div>
     </div>
     <div class="kpi-card yellow">
       <div class="kpi-label">จำนวน Service<br>ที่ได้คะแนนปานกลาง</div>
