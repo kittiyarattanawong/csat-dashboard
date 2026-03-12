@@ -623,8 +623,10 @@ async function fetchSheet(year) {
     rows.forEach((row, rowIndex) => {
       if (!row.c) return;
       const getName = (i) => row.c[i] ? (row.c[i].v || '') : '';
-      const name = String(getName(COL.name)).trim();
-      if (!name || name === 'Service Name' || name === '') return;
+      const orderRaw = row.c[COL.order] ? row.c[COL.order].v : null;
+if (orderRaw === null || isNaN(Number(orderRaw))) return; // ข้ามแถวที่ไม่ใช่ตัวเลข
+const name = String(getName(COL.name)).trim();
+if (!name) return;
       // ลำดับจาก Col A — ถ้าไม่มีให้ใช้ rowIndex แทน
       const orderRaw = row.c[COL.order] ? row.c[COL.order].v : null;
       const order = orderRaw !== null ? String(orderRaw).trim() : String(rowIndex);
