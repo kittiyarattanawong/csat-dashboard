@@ -38,7 +38,6 @@
     padding: 16px;
   }
 
-  /* HEADER */
   .dashboard-header {
     background: linear-gradient(135deg, #161b22 0%, #1a2332 100%);
     border: 1px solid var(--border);
@@ -74,21 +73,14 @@
     font-weight: 500;
   }
 
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
   .dot-green { background: var(--green-text); box-shadow: 0 0 6px var(--green-text); }
   .dot-yellow { background: var(--yellow-text); box-shadow: 0 0 6px var(--yellow-text); }
   .dot-red { background: var(--red-text); box-shadow: 0 0 6px var(--red-text); }
-
   .text-green { color: var(--green-text); }
   .text-yellow { color: var(--yellow-text); }
   .text-red { color: var(--red-text); }
 
-  /* FILTER BAR */
   .filter-bar {
     display: flex;
     gap: 10px;
@@ -110,11 +102,8 @@
     transition: border-color 0.2s;
   }
 
-  .filter-select:hover, .filter-select:focus {
-    border-color: var(--accent);
-  }
+  .filter-select:hover, .filter-select:focus { border-color: var(--accent); }
 
-  /* KPI CARDS */
   .kpi-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -133,37 +122,15 @@
     transition: transform 0.2s, box-shadow 0.2s;
   }
 
-  .kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
   .kpi-card.green { border-color: var(--green); background: linear-gradient(180deg, var(--green-soft) 0%, var(--surface) 100%); }
   .kpi-card.yellow { border-color: var(--yellow); background: linear-gradient(180deg, var(--yellow-soft) 0%, var(--surface) 100%); }
   .kpi-card.red { border-color: var(--red); background: linear-gradient(180deg, var(--red-soft) 0%, var(--surface) 100%); }
 
-  .kpi-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    font-weight: 500;
-    line-height: 1.3;
-  }
+  .kpi-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; line-height: 1.3; }
+  .kpi-value { font-size: 28px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; line-height: 1; margin-bottom: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); }
 
-  .kpi-value {
-    font-size: 28px;
-    font-weight: 700;
-    font-family: 'IBM Plex Mono', monospace;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .kpi-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  /* SEARCH + TYPE FILTER */
   .control-bar {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -176,19 +143,8 @@
     flex-wrap: wrap;
   }
 
-  .search-box {
-    position: relative;
-    flex: 0 0 220px;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 13px;
-  }
+  .search-box { position: relative; flex: 0 0 220px; }
+  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
 
   .search-input {
     width: 100%;
@@ -205,18 +161,8 @@
 
   .search-input:focus { border-color: var(--accent); }
   .search-input::placeholder { color: var(--text-dim); }
-
-  .type-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-
-  .tag-group {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .type-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .tag-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
   .tag {
     padding: 5px 12px;
@@ -232,14 +178,8 @@
   }
 
   .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .tag.active { background: var(--blue-soft); border-color: var(--accent); color: var(--accent); }
 
-  .tag.active {
-    background: var(--blue-soft);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* MAIN CONTENT GRID */
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -257,36 +197,12 @@
     flex-direction: column;
   }
 
-  .panel-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
-  }
+  .panel-title { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
 
-  /* CHART */
-  .chart-area {
-    position: relative;
-    flex: 1;
-    min-height: 260px;
-  }
+  .chart-area { position: relative; flex: 1; min-height: 260px; }
+  canvas#trendChart { width: 100% !important; height: 100% !important; }
 
-  canvas#trendChart {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  /* TOP 5 */
-  .top5-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-    justify-content: space-between;
-  }
+  .top5-list { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: space-between; }
 
   .top5-item {
     display: flex;
@@ -303,16 +219,9 @@
   .top5-item:hover { border-color: var(--green); }
 
   .top5-rank {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: 'IBM Plex Mono', monospace;
-    flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0;
   }
 
   .rank-1 { background: #FFD700; color: #000; }
@@ -321,79 +230,23 @@
   .rank-4 { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
   .rank-5 { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
 
-  .top5-info {
-    flex: 1;
-    min-width: 0;
-  }
+  .top5-info { flex: 1; min-width: 0; }
+  .top5-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top5-company { font-size: 11px; color: var(--text-muted); }
+  .top5-score { font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: var(--green-text); flex-shrink: 0; }
+  .top5-bar { position: relative; height: 4px; background: var(--border); border-radius: 2px; margin-top: 5px; }
+  .top5-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--green), var(--green-text)); transition: width 0.8s ease; }
 
-  .top5-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .table-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 
-  .top5-company {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
+  .table-header-bar { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 
-  .top5-score {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--green-text);
-    flex-shrink: 0;
-  }
-
-  .top5-bar {
-    position: relative;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 5px;
-  }
-
-  .top5-bar-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--green), var(--green-text));
-    transition: width 0.8s ease;
-  }
-
-  /* TABLE */
-  .table-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .table-header-bar {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .table-wrapper {
-    overflow-x: auto;
-    max-height: 320px;
-    overflow-y: auto;
-  }
-
+  .table-wrapper { overflow-x: auto; max-height: 320px; overflow-y: auto; }
   .table-wrapper::-webkit-scrollbar { width: 6px; height: 6px; }
   .table-wrapper::-webkit-scrollbar-track { background: var(--surface); }
   .table-wrapper::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
 
   thead th {
     background: var(--surface2);
@@ -411,54 +264,22 @@
     border-bottom: 1px solid var(--border);
   }
 
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
   tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 10px 12px; color: var(--text); white-space: nowrap; }
 
-  tbody td {
-    padding: 10px 12px;
-    color: var(--text);
-    white-space: nowrap;
-  }
-
-  .score-cell {
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    display: inline-block;
-  }
-
+  .score-cell { font-family: 'IBM Plex Mono', monospace; font-weight: 600; padding: 3px 8px; border-radius: 5px; font-size: 12px; display: inline-block; }
   .score-green { background: var(--green-soft); color: var(--green-text); border: 1px solid var(--green); }
   .score-yellow { background: var(--yellow-soft); color: var(--yellow-text); border: 1px solid var(--yellow); }
   .score-red { background: var(--red-soft); color: var(--red-text); border: 1px solid var(--red); }
   .score-neutral { background: var(--surface2); color: var(--text-muted); }
 
-  .source-badge {
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 10px;
-    background: var(--surface2);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-  }
-
+  .source-badge { font-size: 10px; padding: 2px 7px; border-radius: 10px; background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
   .source-badge.csat { background: var(--blue-soft); color: var(--accent); border-color: var(--blue); }
   .source-badge.dev { background: #1a2d1a; color: #56d97b; border-color: #2ea84f; }
   .source-badge.gform { background: #2a1a3d; color: #b98fff; border-color: #7c4dff; }
 
-  /* FOOTER */
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 12px;
-    padding: 8px;
-  }
+  .footer-note { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 12px; padding: 8px; }
 
   @media (max-width: 768px) {
     .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -468,7 +289,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="dashboard-header">
   <div class="dashboard-title">📊 CSAT Service Satisfaction Dashboard <span style="font-size:13px;color:var(--text-muted);font-weight:400">(By Service)</span></div>
   <div class="legend-row">
@@ -478,7 +298,6 @@
   </div>
 </div>
 
-<!-- FILTER BAR -->
 <div class="filter-bar">
   <label style="font-size:12px;color:var(--text-muted)">ปี :</label>
   <select class="filter-select" id="filterYear" onchange="applyFilters()">
@@ -503,12 +322,8 @@
   </select>
 </div>
 
-<!-- KPI CARDS -->
-<div class="kpi-row" id="kpiRow">
-  <!-- Rendered by JS -->
-</div>
+<div class="kpi-row" id="kpiRow"></div>
 
-<!-- CONTROL BAR -->
 <div class="control-bar">
   <div class="search-box">
     <span class="search-icon">🔍</span>
@@ -523,7 +338,6 @@
   </div>
 </div>
 
-<!-- MAIN GRID: Chart + Top5 -->
 <div class="main-grid">
   <div class="panel">
     <div class="panel-title">📈 คะแนน Total รายเดือน</div>
@@ -537,7 +351,6 @@
   </div>
 </div>
 
-<!-- DATA TABLE -->
 <div class="table-panel">
   <div class="table-header-bar">
     <span style="font-size:13px;font-weight:600;color:var(--text-muted)">📋 รายการ Service ทั้งหมด</span>
@@ -547,22 +360,13 @@
     <table>
       <thead>
         <tr>
+          <th>#</th>
           <th>Service Name</th>
-          <th>ชื่อบริษัท</th>
           <th>Source Data</th>
           <th>Total %</th>
-          <th>Jan</th>
-          <th>Feb</th>
-          <th>Mar</th>
-          <th>Apr</th>
-          <th>May</th>
-          <th>Jun</th>
-          <th>Jul</th>
-          <th>Aug</th>
-          <th>Sep</th>
-          <th>Oct</th>
-          <th>Nov</th>
-          <th>Dec</th>
+          <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
+          <th>May</th><th>Jun</th><th>Jul</th><th>Aug</th>
+          <th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -574,76 +378,121 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-// ============================================================
-// CONFIG — Google Sheet ID และ Sheet Names
-// ============================================================
 const SHEET_ID = '1eVflnsnpCk1aQrSX7ZriGDxCbfATHi0GyCiIAOvk4m8';
 const SHEET_NAMES = {
   '2025': 'คะแนน BY Service ปี 2025',
   '2026': 'คะแนน BY Service ปี 2026'
 };
 
-// Column indices (0-based) ใน Google Sheet
-// A=0(order), B=1(name), C=2(source), F=5(total), I=8(Jan), L=11(Feb), O=14(Mar),
-// R=17(Apr), U=20(May), X=23(Jun), AA=26(Jul), AD=29(Aug),
-// AG=32(Sep), AJ=35(Oct), AM=38(Nov), AP=41(Dec)
+// Column indices (0-based)
+// A=0(order), B=1(name), C=2(source), F=5(total)
+// คะแนนรายเดือน (% ของแต่ละ service): I=8,L=11,O=14,R=17,U=20,X=23,AA=26,AD=29,AG=32,AJ=35,AM=38,AP=41
+// คะแนน Total รายเดือน (สำหรับกราฟ): J+K=9,10 | M+N=12,13 | P+Q=15,16 | S+T=18,19 | V+W=21,22 | Y+Z=24,25
+//   AB+AC=27,28 | AE+AF=30,31 | AH+AI=33,34 | AK+AL=36,37 | AN+AO=39,40 | AQ+AR=42,43
 const COL = {
   order: 0, name: 1, source: 2, total: 5,
-  months: [8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41]
+  serviceMonths: [8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41],
+  // [numerator, denominator] สำหรับคะแนน Total รายเดือนในกราฟ
+  chartMonths: [
+    [9,10],[12,13],[15,16],[18,19],[21,22],[24,25],
+    [27,28],[30,31],[33,34],[36,37],[39,40],[42,43]
+  ]
 };
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MONTH_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 
 let allData = { '2025': [], '2026': [] };
 let activeType = 'all';
 let trendChart = null;
 
 // ============================================================
-// FETCH DATA FROM GOOGLE SHEETS
+// PARSE
 // ============================================================
 function parsePercent(val) {
   if (val === null || val === undefined || val === '') return null;
   const str = String(val).replace('%','').trim();
-  if (str === 'ไม่มีผลประเมิน' || str === '-' || str === '') return null;
+  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีผล' || str === '-' || str === '') return null;
   const n = parseFloat(str);
   return isNaN(n) ? null : n > 1 ? n : n * 100;
 }
 
+function parseNumber(val) {
+  if (val === null || val === undefined || val === '') return null;
+  const n = parseFloat(String(val).replace(',','').trim());
+  return isNaN(n) ? null : n;
+}
+
+// ============================================================
+// FETCH
+// ============================================================
 async function fetchSheet(year) {
   const sheetName = SHEET_NAMES[year];
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
   try {
     const res = await fetch(url);
     const text = await res.text();
-    // Google returns JS callback wrapper — strip it
     const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
     const rows = json.table.rows;
     const data = [];
+
+    // masterTotal จาก F1 (rowIndex=0)
+    let masterTotal = null;
+    // chartMonthlyTotals: คะแนน Total รายเดือนสำหรับกราฟ (คำนวณจาก J/K, M/N, ...)
+    const chartMonthlyTotals = new Array(12).fill(null);
+
     rows.forEach((row, rowIndex) => {
       if (!row.c) return;
-      const getName = (i) => row.c[i] ? (row.c[i].v || '') : '';
-      const name = String(getName(COL.name)).trim();
-      if (!name || name === 'Service Name' || name === '') return;
-      // ลำดับจาก Col A — ถ้าไม่มีให้ใช้ rowIndex แทน
-      const orderRaw = row.c[COL.order] ? row.c[COL.order].v : null;
-      const order = orderRaw !== null ? String(orderRaw).trim() : String(rowIndex);
-      const uid = `${order}_${rowIndex}`; // unique key กัน duplicate ชื่อ
-      const source = String(getName(COL.source)).trim();
-      const totalRaw = row.c[COL.total] ? row.c[COL.total].v : null;
-      const total = parsePercent(totalRaw);
+      const getVal = (i) => (row.c[i] && row.c[i].v !== undefined) ? row.c[i].v : null;
+
+      if (rowIndex === 0) {
+        // F1 = คะแนนรวมทุก service ทุกเดือน
+        masterTotal = parsePercent(getVal(COL.total));
+
+        // ดึงคะแนน Total รายเดือน (J+K, M+N, ...) จาก row แรกนี้เลย
+        COL.chartMonths.forEach(([numCol, denCol], i) => {
+          const num = parseNumber(getVal(numCol));
+          const den = parseNumber(getVal(denCol));
+          if (num !== null && den !== null && den > 0) {
+            chartMonthlyTotals[i] = parseFloat(((num / den) * 100).toFixed(2));
+          }
+        });
+        return; // row แรกไม่ใช่ service
+      }
+
+      // นับเฉพาะแถวที่ Col A เป็นตัวเลข = service จริงๆ
+      const orderRaw = getVal(COL.order);
+      if (orderRaw === null || isNaN(Number(orderRaw))) return;
+      const order = String(orderRaw).trim();
+
+      const name = String(getVal(COL.name) || '').trim();
+      if (!name) return;
+
+      const uid = `${order}_${rowIndex}`;
+      const source = String(getVal(COL.source) || '').trim();
+      const total = parsePercent(getVal(COL.total)); // Col F ของ service นี้
+
       const scores = {};
-      COL.months.forEach((colIdx, i) => {
-        const cell = row.c[colIdx];
-        const val = cell ? cell.v : null;                                       
-        scores[i + 1] = parsePercent(val);
+      COL.serviceMonths.forEach((colIdx, i) => {
+        scores[i + 1] = parsePercent(getVal(colIdx));
       });
-      data.push({ uid, order, name, source, total, scores });
+
+      data.push({ uid, order: Number(order), name, source, total, scores });
     });
+
+    // เรียงตาม order
+    data.sort((a, b) => a.order - b.order);
+
+    // แนบข้อมูลพิเศษไปกับ array
+    data.masterTotal = masterTotal;
+    data.chartMonthlyTotals = chartMonthlyTotals;
+
     return data;
   } catch(e) {
     console.error('Fetch error for', year, e);
-    return [];
+    const empty = [];
+    empty.masterTotal = null;
+    empty.chartMonthlyTotals = new Array(12).fill(null);
+    return empty;
   }
 }
 
@@ -659,14 +508,13 @@ async function loadAllData() {
 }
 
 function showLoading(on) {
-  const kpi = document.getElementById('kpiRow');
-  const tb = document.getElementById('tableBody');
-  const t5 = document.getElementById('top5List');
-  if (on) {
-    kpi.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:20px">⏳ กำลังโหลดข้อมูล...</div>`;
-    tb.innerHTML = `<tr><td colspan="16" style="text-align:center;padding:30px;color:var(--text-muted)">⏳ กำลังโหลดข้อมูล...</td></tr>`;
-    t5.innerHTML = `<div style="color:var(--text-muted);text-align:center;padding:20px">⏳ กำลังโหลด...</div>`;
-  }
+  if (!on) return;
+  document.getElementById('kpiRow').innerHTML =
+    `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:20px">⏳ กำลังโหลดข้อมูล...</div>`;
+  document.getElementById('tableBody').innerHTML =
+    `<tr><td colspan="16" style="text-align:center;padding:30px;color:var(--text-muted)">⏳ กำลังโหลดข้อมูล...</td></tr>`;
+  document.getElementById('top5List').innerHTML =
+    `<div style="color:var(--text-muted);text-align:center;padding:20px">⏳ กำลังโหลด...</div>`;
 }
 
 // ============================================================
@@ -675,31 +523,6 @@ function showLoading(on) {
 function getScore(s, month) {
   const v = s.scores[month];
   return (v !== null && v !== undefined) ? v : null;
-}
-
-function getAvgScore(services, month) {
-  const vals = services.map(s => getScore(s, month)).filter(v => v !== null);
-  if (!vals.length) return null;
-  return vals.reduce((a, b) => a + b, 0) / vals.length;
-}
-
-function getTotalAvg(services, months) {
-  // ใช้ total จาก sheet ถ้ามีเพียง 1 service และมีค่า total
-  if (services.length === 1 && services[0].total !== null) {
-    // ถ้า filter เดือนเดียว ให้ใช้คะแนนเดือนนั้นแทน
-    if (months.length === 1) {
-      const v = getScore(services[0], months[0]);
-      return v !== null ? v : (services[0].total || 0);
-    }
-    return services[0].total;
-  }
-  const allScores = [];
-  months.forEach(m => services.forEach(s => {
-    const v = getScore(s, m);
-    if (v !== null) allScores.push(v);
-  }));
-  if (!allScores.length) return 0;
-  return allScores.reduce((a, b) => a + b, 0) / allScores.length;
 }
 
 function scoreClass(v) {
@@ -738,32 +561,36 @@ function getActiveMonths(month) {
 }
 
 function applyFilters() {
-  const { data, month } = getFilteredData();
+  const { data, month, year } = getFilteredData();
   const months = getActiveMonths(month);
-  renderKPI(data, months);
+  const rawData = allData[year] || [];
+  renderKPI(data, months, rawData);
   renderTop5(data, months);
-  renderTable(data, months);
-  renderChart(data);
+  renderTable(data);
+  renderChart(data, month, year);
 }
 
 // ============================================================
-// RENDER FUNCTIONS
+// RENDER KPI
 // ============================================================
-function renderKPI(data, months) {
-  // คะแนน Total รวม — ใช้ค่า total จาก sheet โดยตรงถ้าเลือกทุกเดือน
-  let totalVal;
-  if (months.length === 12) {
-    const vals = data.map(s => s.total).filter(v => v !== null);
-    totalVal = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
-  } else {
-    totalVal = getAvgScore(data, months[0]) || 0;
-  }
+function renderKPI(data, months, rawData) {
+  // ข้อ 3: คะแนนรวม Total = F1 (masterTotal) เสมอ ไม่ขึ้นกับ filter
+  const totalVal = rawData.masterTotal !== null ? rawData.masterTotal : 0;
   const totalClass = totalVal >= 89 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
   const totalTextClass = totalVal >= 89 ? 'text-green' : totalVal >= 80 ? 'text-yellow' : 'text-red';
 
-  const good = data.filter(s => getTotalAvg([s], months) >= 89).length;
-  const mid  = data.filter(s => { const v = getTotalAvg([s], months); return v >= 80 && v < 89; }).length;
-  const bad  = data.filter(s => getTotalAvg([s], months) < 80).length;
+  // ข้อ 1: นับจาก data.length (ผ่าน filter แล้ว) — ถูกต้องเพราะ fetchSheet กรอง Col A แล้ว
+  const count = data.length;
+
+  // ข้อ 2: อ้างอิง Col F (s.total) โดยตรง
+  const getColF = (s) => {
+    if (months.length === 1) return getScore(s, months[0]); // filter เดือนเดียวใช้คะแนนเดือนนั้น
+    return s.total; // ทั้งหมดใช้ Col F
+  };
+
+  const good = data.filter(s => { const v = getColF(s); return v !== null && v >= 89; }).length;
+  const mid  = data.filter(s => { const v = getColF(s); return v !== null && v >= 80 && v < 89; }).length;
+  const bad  = data.filter(s => { const v = getColF(s); return v !== null && v < 80; }).length;
 
   document.getElementById('kpiRow').innerHTML = `
     <div class="kpi-card ${totalClass}">
@@ -773,7 +600,7 @@ function renderKPI(data, months) {
     </div>
     <div class="kpi-card">
       <div class="kpi-label">จำนวน Service<br>ทั้งหมด</div>
-      <div class="kpi-value">${data.length}</div>
+      <div class="kpi-value">${count}</div>
       <div class="kpi-sub">service</div>
     </div>
     <div class="kpi-card green">
@@ -794,11 +621,19 @@ function renderKPI(data, months) {
   `;
 }
 
+// ============================================================
+// RENDER TOP 5
+// ============================================================
 function renderTop5(data, months) {
-  const ranked = data.map(s => ({
-    ...s,
-    avg: getTotalAvg([s], months)
-  })).filter(s => s.avg > 0).sort((a, b) => b.avg - a.avg).slice(0, 5);
+  const getScore5 = (s) => {
+    if (months.length === 1) return getScore(s, months[0]) || 0;
+    return s.total || 0;
+  };
+
+  const ranked = data.map(s => ({ ...s, avg: getScore5(s) }))
+    .filter(s => s.avg > 0)
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 5);
 
   const html = ranked.map((s, i) => `
     <div class="top5-item">
@@ -812,22 +647,26 @@ function renderTop5(data, months) {
     </div>
   `).join('');
 
-  document.getElementById('top5List').innerHTML = html || `<div style="color:var(--text-muted);text-align:center;padding:20px">ไม่มีข้อมูล</div>`;
+  document.getElementById('top5List').innerHTML = html ||
+    `<div style="color:var(--text-muted);text-align:center;padding:20px">ไม่มีข้อมูล</div>`;
 }
 
-function renderTable(data, months) {
-  const allMonths = [1,2,3,4,5,6,7,8,9,10,11,12];
+// ============================================================
+// RENDER TABLE
+// ============================================================
+function renderTable(data) {
   document.getElementById('tableCount').textContent = `${data.length} รายการ`;
 
   const rows = data.map(s => {
-    const totalVal = s.total !== null ? s.total : getTotalAvg([s], allMonths);
-    const monthCells = allMonths.map(m => {
+    const totalVal = s.total;
+    const monthCells = [1,2,3,4,5,6,7,8,9,10,11,12].map(m => {
       const v = getScore(s, m);
       if (v === null) return `<td><span class="score-cell score-neutral">ไม่มีผล</span></td>`;
       return `<td><span class="score-cell ${scoreClass(v)}">${v.toFixed(2)}%</span></td>`;
     }).join('');
 
-    const srcClass = s.source.includes('พัฒนา') ? 'dev' : s.source.toLowerCase().includes('google') ? 'gform' : 'csat';
+    const srcClass = s.source.includes('พัฒนา') ? 'dev'
+      : s.source.toLowerCase().includes('google') ? 'gform' : 'csat';
 
     return `
       <tr>
@@ -840,15 +679,32 @@ function renderTable(data, months) {
     `;
   }).join('');
 
-  document.getElementById('tableBody').innerHTML = rows || `<tr><td colspan="15" style="text-align:center;padding:20px;color:var(--text-muted)">ไม่พบข้อมูล</td></tr>`;
+  document.getElementById('tableBody').innerHTML = rows ||
+    `<tr><td colspan="16" style="text-align:center;padding:20px;color:var(--text-muted)">ไม่พบข้อมูล</td></tr>`;
 }
 
-function renderChart(data) {
-  const allMonths = [1,2,3,4,5,6,7,8,9,10,11,12];
-  const points = allMonths.map(m => {
-    const avg = getAvgScore(data, m);
-    return avg !== null ? parseFloat(avg.toFixed(2)) : null;
-  });
+// ============================================================
+// RENDER CHART — ข้อ 4: ใช้ chartMonthlyTotals (J/K, M/N, ...)
+// ============================================================
+function renderChart(data, selectedMonth, year) {
+  const rawData = allData[year] || [];
+  // ใช้ chartMonthlyTotals จาก row แรก (คำนวณจาก J/K, M/N ฯลฯ)
+  // ถ้า filter type/search อยู่ ให้คำนวณจาก data ที่ filter แทน
+  let points;
+
+  const isFiltered = activeType !== 'all' || document.getElementById('searchInput').value !== '';
+
+  if (isFiltered) {
+    // คำนวณจาก service ที่ filter เอาเอง
+    points = [1,2,3,4,5,6,7,8,9,10,11,12].map(m => {
+      const vals = data.map(s => getScore(s, m)).filter(v => v !== null);
+      if (!vals.length) return null;
+      return parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2));
+    });
+  } else {
+    // ใช้ค่าจาก J/K, M/N ที่ดึงมาจาก row แรกโดยตรง
+    points = rawData.chartMonthlyTotals || new Array(12).fill(null);
+  }
 
   const pointColors = points.map(v => v === null ? '#555' : scoreColorVar(v));
 
@@ -894,28 +750,17 @@ function renderChart(data) {
           titleColor: '#e6edf3',
           bodyColor: '#7d8590',
           callbacks: {
-            label: ctx => ` ${ctx.parsed.y !== null ? ctx.parsed.y.toFixed(2)+'%' : 'ไม่มีข้อมูล'}`,
-            labelColor: ctx => ({
-              backgroundColor: scoreColorVar(ctx.parsed.y),
-              borderColor: 'transparent'
-            })
+            label: ctx => ctx.parsed.y !== null ? ` ${ctx.parsed.y.toFixed(2)}%` : ' ไม่มีข้อมูล',
+            labelColor: ctx => ({ backgroundColor: scoreColorVar(ctx.parsed.y), borderColor: 'transparent' })
           }
         }
       },
       scales: {
-        x: {
-          grid: { color: '#2a3441' },
-          ticks: { color: '#7d8590', font: { size: 11 } }
-        },
+        x: { grid: { color: '#2a3441' }, ticks: { color: '#7d8590', font: { size: 11 } } },
         y: {
-          min: 60,
-          max: 100,
+          min: 60, max: 100,
           grid: { color: '#2a3441' },
-          ticks: {
-            color: '#7d8590',
-            font: { size: 11 },
-            callback: v => v + '%'
-          }
+          ticks: { color: '#7d8590', font: { size: 11 }, callback: v => v + '%' }
         }
       }
     }
@@ -929,22 +774,6 @@ function selectTag(el) {
   applyFilters();
 }
 
-// ============================================================
-// UPDATE TABLE HEADER (remove company col since it's in source)
-// ============================================================
-document.querySelector('thead tr').innerHTML = `
-  <th>#</th>
-  <th>Service Name</th>
-  <th>Source Data</th>
-  <th>Total %</th>
-  <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
-  <th>May</th><th>Jun</th><th>Jul</th><th>Aug</th>
-  <th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-`;
-
-// ============================================================
-// INIT — Load data on page load
-// ============================================================
 loadAllData();
 </script>
 </body>
