@@ -438,7 +438,7 @@ let activeServiceUid = null;
 function parsePercent(val) {
   if (val === null || val === undefined || val === '') return null;
   const str = String(val).replace('%','').trim();
-  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีการสำรวจ' || str === '-' || str === '') return null;
+  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีผลประเมิน' || str === '-' || str === '') return null;
   const n = parseFloat(str);
   return isNaN(n) ? null : n > 1 ? n : n * 100;
 }
