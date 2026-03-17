@@ -126,13 +126,6 @@
     transition: border-color 0.2s, background 0.3s; flex: 1;
   }
   .top5-item:hover { border-color: var(--green); }
-  .top5-rank {
-    width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0;
-  }
-  .rank-1 { background: #FFD700; color: #000; } .rank-2 { background: #C0C0C0; color: #000; }
-  .rank-3 { background: #CD7F32; color: #000; }
-  .rank-4, .rank-5 { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
   .top5-info { flex: 1; min-width: 0; }
   .top5-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .top5-company { font-size: 11px; color: var(--text-muted); }
@@ -487,8 +480,11 @@ function updateBanner(data) {
 }
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
+// ============================================================
+// renderTop5 — SVG rank icons เหมือนรูปที่ส่งมาเปะๆ
+// (แก้เฉพาะส่วนนี้ ที่เหลือ = doc3 ทุกอย่าง)
+// ============================================================
 function renderTop5(data, months) {
-  // ── NEW RANK ICONS matching the uploaded image ──
   const rankIcons = [
     // อันดับ 1 - ทอง
     `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
@@ -502,22 +498,21 @@ function renderTop5(data, months) {
           <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
         </filter>
       </defs>
-      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
-      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
-      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
-      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)"   fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"    fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"   fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)"  fill="#5BB85D"/>
       <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
-      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
-      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
-      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
-      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
-      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <ellipse cx="96"  cy="72" rx="6"   ry="10" transform="rotate(-35,96,72)"  fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6"   ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6"   ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6"   ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9"  transform="rotate(55,88,25)"   fill="#5BB85D"/>
       <circle cx="55" cy="51" r="34" fill="url(#gold1)" filter="url(#ms1)"/>
       <circle cx="55" cy="51" r="34" fill="none" stroke="#C47A0A" stroke-width="1.5" opacity="0.35"/>
       <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.22" transform="rotate(-20,43,38)"/>
       <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#8B4500">1</text>
     </svg>`,
-
     // อันดับ 2 - เงิน
     `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -530,22 +525,21 @@ function renderTop5(data, months) {
           <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
         </filter>
       </defs>
-      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
-      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
-      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
-      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)"   fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"    fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"   fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)"  fill="#5BB85D"/>
       <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
-      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
-      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
-      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
-      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
-      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <ellipse cx="96"  cy="72" rx="6"   ry="10" transform="rotate(-35,96,72)"  fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6"   ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6"   ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6"   ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9"  transform="rotate(55,88,25)"   fill="#5BB85D"/>
       <circle cx="55" cy="51" r="34" fill="url(#silv2)" filter="url(#ms2)"/>
       <circle cx="55" cy="51" r="34" fill="none" stroke="#9E9E9E" stroke-width="1.5" opacity="0.35"/>
       <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.28" transform="rotate(-20,43,38)"/>
       <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#555555">2</text>
     </svg>`,
-
     // อันดับ 3 - ส้ม/ทองแดง
     `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -558,22 +552,21 @@ function renderTop5(data, months) {
           <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
         </filter>
       </defs>
-      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
-      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
-      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
-      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)"   fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"    fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"   fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)"  fill="#5BB85D"/>
       <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
-      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
-      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
-      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
-      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
-      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <ellipse cx="96"  cy="72" rx="6"   ry="10" transform="rotate(-35,96,72)"  fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6"   ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6"   ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6"   ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9"  transform="rotate(55,88,25)"   fill="#5BB85D"/>
       <circle cx="55" cy="51" r="34" fill="url(#brnz3)" filter="url(#ms3)"/>
       <circle cx="55" cy="51" r="34" fill="none" stroke="#A0522D" stroke-width="1.5" opacity="0.35"/>
-      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.2" transform="rotate(-20,43,38)"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.20" transform="rotate(-20,43,38)"/>
       <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#5C2A00">3</text>
     </svg>`,
-
     // อันดับ 4 - เขียวอ่อน
     `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -586,22 +579,21 @@ function renderTop5(data, months) {
           <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
         </filter>
       </defs>
-      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
-      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
-      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
-      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)"   fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"    fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"   fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)"  fill="#5BB85D"/>
       <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
-      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
-      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
-      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
-      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
-      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <ellipse cx="96"  cy="72" rx="6"   ry="10" transform="rotate(-35,96,72)"  fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6"   ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6"   ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6"   ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9"  transform="rotate(55,88,25)"   fill="#5BB85D"/>
       <circle cx="55" cy="51" r="34" fill="url(#grn4)" filter="url(#ms4)"/>
       <circle cx="55" cy="51" r="34" fill="none" stroke="#558B2F" stroke-width="1.5" opacity="0.35"/>
       <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.22" transform="rotate(-20,43,38)"/>
       <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#1B5E20">4</text>
     </svg>`,
-
     // อันดับ 5 - ฟ้า
     `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -614,16 +606,16 @@ function renderTop5(data, months) {
           <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
         </filter>
       </defs>
-      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
-      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
-      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
-      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)"   fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"    fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"   fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)"  fill="#5BB85D"/>
       <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
-      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
-      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
-      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
-      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
-      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <ellipse cx="96"  cy="72" rx="6"   ry="10" transform="rotate(-35,96,72)"  fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6"   ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6"   ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6"   ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9"  transform="rotate(55,88,25)"   fill="#5BB85D"/>
       <circle cx="55" cy="51" r="34" fill="url(#blu5)" filter="url(#ms5)"/>
       <circle cx="55" cy="51" r="34" fill="none" stroke="#0277BD" stroke-width="1.5" opacity="0.35"/>
       <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.25" transform="rotate(-20,43,38)"/>
@@ -636,7 +628,7 @@ function renderTop5(data, months) {
 
   document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-      <div class="top5-rank rank-${i+1}" style="width:52px;height:80px;background:none;border:none;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+      <div style="width:52px;height:80px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
         ${rankIcons[i]}
       </div>
       <div class="top5-info">
