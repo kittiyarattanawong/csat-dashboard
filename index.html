@@ -540,23 +540,21 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 // ============================================================
-// RENDER TOP 5 — with new rank badge icons
+// RENDER TOP 5
 // ============================================================
 function renderTop5(data, months) {
-  const ranked = data.map(s => ({ ...s, avg: getColF(s, months) || 0 }))
-    .filter(s => s.avg > 0).sort((a, b) => b.avg - a.avg).slice(0, 5);
-  const html = ranked.map((s, i) => `
+  const ranked = data.map(s => ({ ...s, avg: getColF(s,months)||0 }))
+    .filter(s => s.avg > 0).sort((a,b) => b.avg-a.avg).slice(0,5);
+  document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-      ${rankBadgeHTML(i + 1)}
+      <div class="top5-rank rank-${i+1}">${i+1}</div>
       <div class="top5-info">
         <div class="top5-name">${s.name} <span style="font-size:10px;color:var(--text-dim)">#${s.order}</span></div>
         <div class="top5-company">${s.source}</div>
         <div class="top5-bar"><div class="top5-bar-fill" style="width:${s.avg}%"></div></div>
       </div>
       <div class="top5-score">${s.avg.toFixed(2)}%</div>
-    </div>
-  `).join('');
-  document.getElementById('top5List').innerHTML = html || `<div style="color:var(--text-muted);text-align:center;padding:20px">ไม่มีข้อมูล</div>`;
+    </div>`).join('') || `<div style="color:var(--text-muted);text-align:center;padding:20px">ไม่มีข้อมูล</div>`;
 }
 
 // ============================================================
