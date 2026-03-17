@@ -543,11 +543,164 @@ function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = nu
 // RENDER TOP 5
 // ============================================================
 function renderTop5(data, months) {
+  const rankIcons = [
+    // อันดับ 1 - ทอง
+    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g1" cx="38%" cy="32%" r="60%">
+          <stop offset="0%" stop-color="#FFE566"/>
+          <stop offset="60%" stop-color="#F5A623"/>
+          <stop offset="100%" stop-color="#C47A0A"/>
+        </radialGradient>
+      </defs>
+      <!-- Laurel Left -->
+      <g fill="#5BB85D">
+        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
+        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
+        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
+        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
+        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
+      </g>
+      <!-- Laurel Right -->
+      <g fill="#5BB85D">
+        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
+        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
+        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
+        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
+        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
+      </g>
+      <!-- Medal circle -->
+      <circle cx="50" cy="50" r="28" fill="url(#g1)"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#C47A0A" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="43" cy="43" r="8" fill="white" opacity="0.12"/>
+      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#7A4500">1</text>
+    </svg>`,
+
+    // อันดับ 2 - เงิน
+    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g2" cx="38%" cy="32%" r="60%">
+          <stop offset="0%" stop-color="#F5F5F5"/>
+          <stop offset="60%" stop-color="#BDBDBD"/>
+          <stop offset="100%" stop-color="#9E9E9E"/>
+        </radialGradient>
+      </defs>
+      <g fill="#5BB85D">
+        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
+        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
+        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
+        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
+        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
+      </g>
+      <g fill="#5BB85D">
+        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
+        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
+        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
+        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
+        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
+      </g>
+      <circle cx="50" cy="50" r="28" fill="url(#g2)"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#9E9E9E" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="43" cy="43" r="8" fill="white" opacity="0.18"/>
+      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#555">2</text>
+    </svg>`,
+
+    // อันดับ 3 - ทองแดง/ส้ม
+    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g3" cx="38%" cy="32%" r="60%">
+          <stop offset="0%" stop-color="#FFCC80"/>
+          <stop offset="55%" stop-color="#E8832A"/>
+          <stop offset="100%" stop-color="#A0522D"/>
+        </radialGradient>
+      </defs>
+      <g fill="#5BB85D">
+        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
+        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
+        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
+        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
+        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
+      </g>
+      <g fill="#5BB85D">
+        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
+        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
+        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
+        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
+        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
+      </g>
+      <circle cx="50" cy="50" r="28" fill="url(#g3)"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#A0522D" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="43" cy="43" r="8" fill="white" opacity="0.14"/>
+      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#5C2A00">3</text>
+    </svg>`,
+
+    // อันดับ 4 - เขียว
+    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g4" cx="38%" cy="32%" r="60%">
+          <stop offset="0%" stop-color="#DCEDC8"/>
+          <stop offset="60%" stop-color="#8BC34A"/>
+          <stop offset="100%" stop-color="#558B2F"/>
+        </radialGradient>
+      </defs>
+      <g fill="#5BB85D">
+        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
+        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
+        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
+        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
+        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
+      </g>
+      <g fill="#5BB85D">
+        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
+        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
+        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
+        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
+        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
+      </g>
+      <circle cx="50" cy="50" r="28" fill="url(#g4)"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#558B2F" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="43" cy="43" r="8" fill="white" opacity="0.16"/>
+      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#1B5E20">4</text>
+    </svg>`,
+
+    // อันดับ 5 - ฟ้า
+    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g5" cx="38%" cy="32%" r="60%">
+          <stop offset="0%" stop-color="#B3E5FC"/>
+          <stop offset="60%" stop-color="#4FC3F7"/>
+          <stop offset="100%" stop-color="#0277BD"/>
+        </radialGradient>
+      </defs>
+      <g fill="#5BB85D">
+        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
+        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
+        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
+        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
+        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
+      </g>
+      <g fill="#5BB85D">
+        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
+        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
+        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
+        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
+        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
+      </g>
+      <circle cx="50" cy="50" r="28" fill="url(#g5)"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#0277BD" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="43" cy="43" r="8" fill="white" opacity="0.18"/>
+      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#01579B">5</text>
+    </svg>`
+  ];
+
   const ranked = data.map(s => ({ ...s, avg: getColF(s,months)||0 }))
     .filter(s => s.avg > 0).sort((a,b) => b.avg-a.avg).slice(0,5);
+
   document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-      <div class="top5-rank rank-${i+1}">${i+1}</div>
+      <div class="top5-rank rank-${i+1}" style="width:36px;height:36px;background:none;border:none;padding:0;display:flex;align-items:center;justify-content:center">
+        ${rankIcons[i]}
+      </div>
       <div class="top5-info">
         <div class="top5-name">${s.name} <span style="font-size:10px;color:var(--text-dim)">#${s.order}</span></div>
         <div class="top5-company">${s.source}</div>
