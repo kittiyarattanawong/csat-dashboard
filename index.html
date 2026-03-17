@@ -6,7 +6,6 @@
 <title>Customer Satisfaction Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ── DARK THEME (default) ── */
   :root {
     --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2a3441;
     --green: #2ea84f; --green-soft: #1a3d28; --green-text: #56d97b;
@@ -17,8 +16,6 @@
     --shadow: rgba(0,0,0,0.4);
     --theme-btn-bg: #1c2330; --theme-btn-border: #2a3441;
   }
-
-  /* ── LIGHT THEME ── */
   [data-theme="light"] {
     --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
     --green: #1a7f37; --green-soft: #dafbe1; --green-text: #1a7f37;
@@ -29,37 +26,21 @@
     --shadow: rgba(0,0,0,0.12);
     --theme-btn-bg: #f0f2f5; --theme-btn-border: #d0d7de;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); font-family: 'IBM Plex Sans Thai', sans-serif; color: var(--text); min-height: 100vh; padding: 16px; transition: background 0.3s, color 0.3s; }
-
-  /* ── THEME TOGGLE BUTTON ── */
   .theme-toggle {
-    background: var(--theme-btn-bg);
-    border: 1.5px solid var(--theme-btn-border);
-    border-radius: 20px;
-    padding: 6px 14px;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: inherit;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
-    user-select: none;
+    background: var(--theme-btn-bg); border: 1.5px solid var(--theme-btn-border); border-radius: 20px;
+    padding: 6px 14px; cursor: pointer; font-size: 13px; font-family: inherit; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px; transition: all 0.2s; user-select: none;
   }
   .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
   .theme-icon { font-size: 15px; }
-
   .dashboard-header {
-    background: var(--surface);
-    border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px;
     margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     transition: background 0.3s, border-color 0.3s;
   }
   [data-theme="dark"] .dashboard-header { background: linear-gradient(135deg, #161b22 0%, #1a2332 100%); }
-
   .dashboard-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
   .header-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .legend-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
@@ -69,14 +50,12 @@
   .dot-yellow { background: var(--yellow-text); box-shadow: 0 0 6px var(--yellow-text); }
   .dot-red { background: var(--red-text); box-shadow: 0 0 6px var(--red-text); }
   .text-green { color: var(--green-text); } .text-yellow { color: var(--yellow-text); } .text-red { color: var(--red-text); }
-
   .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
   .filter-select {
     background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
     color: var(--text); padding: 7px 12px; font-size: 13px; font-family: inherit; cursor: pointer; outline: none; transition: border-color 0.2s, background 0.3s;
   }
   .filter-select:hover, .filter-select:focus { border-color: var(--accent); }
-
   .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 12px; }
   .kpi-card {
     background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
@@ -96,7 +75,6 @@
   .kpi-value { font-size: 28px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; line-height: 1; margin-bottom: 4px; }
   .kpi-sub { font-size: 11px; color: var(--text-muted); }
   .kpi-hint { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-
   .control-bar {
     background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
@@ -120,7 +98,6 @@
   }
   .tag:hover { border-color: var(--accent); color: var(--accent); }
   .tag.active { background: var(--blue-soft); border-color: var(--accent); color: var(--accent); }
-
   .filter-banner {
     display: none; align-items: center; justify-content: space-between;
     background: var(--blue-soft); border: 1px solid var(--blue); border-radius: 8px;
@@ -133,7 +110,6 @@
     cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.7; transition: opacity 0.2s;
   }
   .filter-banner-close:hover { opacity: 1; }
-
   .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: stretch; }
   .panel {
     background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
@@ -143,7 +119,6 @@
   .panel-title.highlight { color: var(--accent); }
   .chart-area { position: relative; flex: 1; min-height: 260px; }
   canvas#trendChart { width: 100% !important; height: 100% !important; }
-
   .top5-list { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: space-between; }
   .top5-item {
     display: flex; align-items: center; gap: 10px; padding: 10px 12px;
@@ -164,7 +139,6 @@
   .top5-score { font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: var(--green-text); flex-shrink: 0; }
   .top5-bar { position: relative; height: 4px; background: var(--border); border-radius: 2px; margin-top: 5px; }
   .top5-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--green), var(--green-text)); transition: width 0.8s ease; }
-
   .table-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: background 0.3s, border-color 0.3s; }
   .table-header-bar { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .table-wrapper { overflow-x: auto; max-height: 320px; overflow-y: auto; }
@@ -192,7 +166,6 @@
   .source-badge.dev { background: var(--green-soft); color: var(--green-text); border-color: var(--green); }
   .source-badge.gform { background: #2a1a3d; color: #b98fff; border-color: #7c4dff; }
   [data-theme="light"] .source-badge.gform { background: #f3eeff; color: #6639ba; border-color: #8250df; }
-
   .footer-note { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 12px; padding: 8px; }
   @media (max-width: 768px) {
     .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -301,16 +274,12 @@ let activeKpiFilter = null;
 let activeServiceUid = null;
 let currentTheme = 'dark';
 
-// ============================================================
-// THEME
-// ============================================================
 function toggleTheme() {
   currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', currentTheme);
   document.getElementById('themeIcon').textContent  = currentTheme === 'dark' ? '☀️' : '🌙';
   document.getElementById('themeLabel').textContent = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
   localStorage.setItem('csat-theme', currentTheme);
-  // re-render chart with new colors
   const { data, month, year } = getBaseData();
   const rawData = allData[year] || [];
   if (activeServiceUid) {
@@ -325,19 +294,16 @@ function initTheme() {
   if (saved && saved !== currentTheme) toggleTheme();
 }
 
-function getChartGridColor()   { return currentTheme === 'dark' ? '#2a3441' : '#e1e4e8'; }
-function getChartTickColor()   { return currentTheme === 'dark' ? '#7d8590' : '#656d76'; }
-function getChartTooltipBg()   { return currentTheme === 'dark' ? '#1c2330' : '#ffffff'; }
+function getChartGridColor()    { return currentTheme === 'dark' ? '#2a3441' : '#e1e4e8'; }
+function getChartTickColor()    { return currentTheme === 'dark' ? '#7d8590' : '#656d76'; }
+function getChartTooltipBg()    { return currentTheme === 'dark' ? '#1c2330' : '#ffffff'; }
 function getChartTooltipBorder(){ return currentTheme === 'dark' ? '#2a3441' : '#d0d7de'; }
-function getChartTooltipTitle(){ return currentTheme === 'dark' ? '#e6edf3' : '#1f2328'; }
+function getChartTooltipTitle() { return currentTheme === 'dark' ? '#e6edf3' : '#1f2328'; }
 
-// ============================================================
-// PARSE
-// ============================================================
 function parsePercent(val) {
   if (val === null || val === undefined || val === '') return null;
   const str = String(val).replace('%','').trim();
-  if (str === 'ไม่มีผลประเมิน' || str === 'ไม่มีผลประเมิน' || str === '-' || str === '') return null;
+  if (str === 'ไม่มีผลประเมิน' || str === '-' || str === '') return null;
   const n = parseFloat(str);
   return isNaN(n) ? null : n > 1 ? n : n * 100;
 }
@@ -347,9 +313,6 @@ function parseNumber(val) {
   return isNaN(n) ? null : n;
 }
 
-// ============================================================
-// FETCH
-// ============================================================
 async function fetchSheet(year) {
   const sheetName = SHEET_NAMES[year];
   const base = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
@@ -411,9 +374,6 @@ function showLoading(on) {
   document.getElementById('top5List').innerHTML = `<div style="color:var(--text-muted);text-align:center;padding:20px">⏳ กำลังโหลด...</div>`;
 }
 
-// ============================================================
-// HELPERS
-// ============================================================
 function getScore(s, month) { const v = s.scores[month]; return (v !== null && v !== undefined) ? v : null; }
 function scoreClass(v) {
   if (v === null || v === undefined) return 'score-neutral';
@@ -430,9 +390,6 @@ function getColF(s, months) {
   return s.total;
 }
 
-// ============================================================
-// FILTERS
-// ============================================================
 function getBaseData() {
   const year = document.getElementById('filterYear').value;
   const month = document.getElementById('filterMonth').value;
@@ -456,18 +413,15 @@ function applyFilters() {
   const { data, month, year } = getBaseData();
   const months = getActiveMonths(month);
   const rawData = allData[year] || [];
-
   const good = data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=90; });
   const mid  = data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=80 && Math.round(v*100)/100<90; });
   const bad  = data.filter(s => { const v = getColF(s,months); return v!==null && v<80; });
   const count = good.length + mid.length + bad.length;
-
   renderKPI(rawData, count, good.length, mid.length, bad.length);
   const tableData = getFilteredTableData(data, months);
   renderTop5(data, months);
   renderTable(tableData, months);
   updateBanner(data);
-
   if (activeServiceUid) {
     const svc = data.find(s => s.uid === activeServiceUid);
     if (svc) { renderChartService(svc); return; }
@@ -476,9 +430,6 @@ function applyFilters() {
   renderChartTotal(tableData, month, year, rawData);
 }
 
-// ============================================================
-// RENDER KPI
-// ============================================================
 function renderKPI(rawData, count, good, mid, bad) {
   const totalVal = rawData.masterTotal !== null ? rawData.masterTotal : 0;
   const totalClass = totalVal >= 90 ? 'green' : totalVal >= 80 ? 'yellow' : 'red';
@@ -519,9 +470,6 @@ function toggleKpiFilter(type) {
   applyFilters();
 }
 
-// ============================================================
-// BANNER
-// ============================================================
 function updateBanner(data) {
   const banner = document.getElementById('filterBanner');
   const bannerText = document.getElementById('filterBannerText');
@@ -539,157 +487,147 @@ function updateBanner(data) {
 }
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
-// ============================================================
-// RENDER TOP 5
-// ============================================================
 function renderTop5(data, months) {
+  // ── NEW RANK ICONS matching the uploaded image ──
   const rankIcons = [
     // อันดับ 1 - ทอง
-    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="g1" cx="38%" cy="32%" r="60%">
+        <radialGradient id="gold1" cx="35%" cy="28%" r="65%">
           <stop offset="0%" stop-color="#FFE566"/>
-          <stop offset="60%" stop-color="#F5A623"/>
+          <stop offset="55%" stop-color="#F5A623"/>
           <stop offset="100%" stop-color="#C47A0A"/>
         </radialGradient>
+        <filter id="ms1" x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
+        </filter>
       </defs>
-      <!-- Laurel Left -->
-      <g fill="#5BB85D">
-        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
-        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
-        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
-        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
-        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
-      </g>
-      <!-- Laurel Right -->
-      <g fill="#5BB85D">
-        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
-        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
-        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
-        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
-        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
-      </g>
-      <!-- Medal circle -->
-      <circle cx="50" cy="50" r="28" fill="url(#g1)"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#C47A0A" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="43" cy="43" r="8" fill="white" opacity="0.12"/>
-      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#7A4500">1</text>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
+      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <circle cx="55" cy="51" r="34" fill="url(#gold1)" filter="url(#ms1)"/>
+      <circle cx="55" cy="51" r="34" fill="none" stroke="#C47A0A" stroke-width="1.5" opacity="0.35"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.22" transform="rotate(-20,43,38)"/>
+      <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#8B4500">1</text>
     </svg>`,
 
     // อันดับ 2 - เงิน
-    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="g2" cx="38%" cy="32%" r="60%">
-          <stop offset="0%" stop-color="#F5F5F5"/>
-          <stop offset="60%" stop-color="#BDBDBD"/>
+        <radialGradient id="silv2" cx="35%" cy="28%" r="65%">
+          <stop offset="0%" stop-color="#F8F8F8"/>
+          <stop offset="55%" stop-color="#BDBDBD"/>
           <stop offset="100%" stop-color="#9E9E9E"/>
         </radialGradient>
+        <filter id="ms2" x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
+        </filter>
       </defs>
-      <g fill="#5BB85D">
-        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
-        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
-        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
-        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
-        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
-      </g>
-      <g fill="#5BB85D">
-        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
-        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
-        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
-        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
-        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
-      </g>
-      <circle cx="50" cy="50" r="28" fill="url(#g2)"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#9E9E9E" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="43" cy="43" r="8" fill="white" opacity="0.18"/>
-      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#555">2</text>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
+      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <circle cx="55" cy="51" r="34" fill="url(#silv2)" filter="url(#ms2)"/>
+      <circle cx="55" cy="51" r="34" fill="none" stroke="#9E9E9E" stroke-width="1.5" opacity="0.35"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.28" transform="rotate(-20,43,38)"/>
+      <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#555555">2</text>
     </svg>`,
 
-    // อันดับ 3 - ทองแดง/ส้ม
-    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    // อันดับ 3 - ส้ม/ทองแดง
+    `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="g3" cx="38%" cy="32%" r="60%">
+        <radialGradient id="brnz3" cx="35%" cy="28%" r="65%">
           <stop offset="0%" stop-color="#FFCC80"/>
-          <stop offset="55%" stop-color="#E8832A"/>
+          <stop offset="48%" stop-color="#E8832A"/>
           <stop offset="100%" stop-color="#A0522D"/>
         </radialGradient>
+        <filter id="ms3" x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
+        </filter>
       </defs>
-      <g fill="#5BB85D">
-        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
-        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
-        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
-        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
-        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
-      </g>
-      <g fill="#5BB85D">
-        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
-        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
-        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
-        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
-        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
-      </g>
-      <circle cx="50" cy="50" r="28" fill="url(#g3)"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#A0522D" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="43" cy="43" r="8" fill="white" opacity="0.14"/>
-      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#5C2A00">3</text>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
+      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <circle cx="55" cy="51" r="34" fill="url(#brnz3)" filter="url(#ms3)"/>
+      <circle cx="55" cy="51" r="34" fill="none" stroke="#A0522D" stroke-width="1.5" opacity="0.35"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.2" transform="rotate(-20,43,38)"/>
+      <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#5C2A00">3</text>
     </svg>`,
 
-    // อันดับ 4 - เขียว
-    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    // อันดับ 4 - เขียวอ่อน
+    `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="g4" cx="38%" cy="32%" r="60%">
+        <radialGradient id="grn4" cx="35%" cy="28%" r="65%">
           <stop offset="0%" stop-color="#DCEDC8"/>
-          <stop offset="60%" stop-color="#8BC34A"/>
+          <stop offset="55%" stop-color="#8BC34A"/>
           <stop offset="100%" stop-color="#558B2F"/>
         </radialGradient>
+        <filter id="ms4" x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
+        </filter>
       </defs>
-      <g fill="#5BB85D">
-        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
-        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
-        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
-        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
-        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
-      </g>
-      <g fill="#5BB85D">
-        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
-        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
-        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
-        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
-        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
-      </g>
-      <circle cx="50" cy="50" r="28" fill="url(#g4)"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#558B2F" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="43" cy="43" r="8" fill="white" opacity="0.16"/>
-      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#1B5E20">4</text>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
+      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <circle cx="55" cy="51" r="34" fill="url(#grn4)" filter="url(#ms4)"/>
+      <circle cx="55" cy="51" r="34" fill="none" stroke="#558B2F" stroke-width="1.5" opacity="0.35"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.22" transform="rotate(-20,43,38)"/>
+      <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#1B5E20">4</text>
     </svg>`,
 
     // อันดับ 5 - ฟ้า
-    `<svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    `<svg width="52" height="80" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="g5" cx="38%" cy="32%" r="60%">
+        <radialGradient id="blu5" cx="35%" cy="28%" r="65%">
           <stop offset="0%" stop-color="#B3E5FC"/>
-          <stop offset="60%" stop-color="#4FC3F7"/>
+          <stop offset="55%" stop-color="#4FC3F7"/>
           <stop offset="100%" stop-color="#0277BD"/>
         </radialGradient>
+        <filter id="ms5" x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="1" dy="3" stdDeviation="4" flood-color="#00000055"/>
+        </filter>
       </defs>
-      <g fill="#5BB85D">
-        <ellipse cx="19" cy="62" rx="5.5" ry="9" transform="rotate(30 19 62)"/>
-        <ellipse cx="13" cy="52" rx="5.5" ry="9" transform="rotate(10 13 52)"/>
-        <ellipse cx="13" cy="41" rx="5.5" ry="9" transform="rotate(-15 13 41)"/>
-        <ellipse cx="18" cy="31" rx="5.5" ry="9" transform="rotate(-38 18 31)"/>
-        <ellipse cx="26" cy="23" rx="5" ry="8" transform="rotate(-58 26 23)"/>
-      </g>
-      <g fill="#5BB85D">
-        <ellipse cx="81" cy="62" rx="5.5" ry="9" transform="rotate(-30 81 62)"/>
-        <ellipse cx="87" cy="52" rx="5.5" ry="9" transform="rotate(-10 87 52)"/>
-        <ellipse cx="87" cy="41" rx="5.5" ry="9" transform="rotate(15 87 41)"/>
-        <ellipse cx="82" cy="31" rx="5.5" ry="9" transform="rotate(38 82 31)"/>
-        <ellipse cx="74" cy="23" rx="5" ry="8" transform="rotate(58 74 23)"/>
-      </g>
-      <circle cx="50" cy="50" r="28" fill="url(#g5)"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#0277BD" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="43" cy="43" r="8" fill="white" opacity="0.18"/>
-      <text x="50" y="58" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial Black,sans-serif" fill="#01579B">5</text>
+      <ellipse cx="14" cy="72" rx="6" ry="10" transform="rotate(35,14,72)" fill="#5BB85D"/>
+      <ellipse cx="9"  cy="59" rx="6" ry="10" transform="rotate(15,9,59)"   fill="#5BB85D"/>
+      <ellipse cx="8"  cy="46" rx="6" ry="10" transform="rotate(-10,8,46)"  fill="#5BB85D"/>
+      <ellipse cx="13" cy="34" rx="6" ry="10" transform="rotate(-33,13,34)" fill="#5BB85D"/>
+      <ellipse cx="22" cy="25" rx="5.5" ry="9" transform="rotate(-55,22,25)" fill="#5BB85D"/>
+      <ellipse cx="96" cy="72" rx="6" ry="10" transform="rotate(-35,96,72)" fill="#5BB85D"/>
+      <ellipse cx="101" cy="59" rx="6" ry="10" transform="rotate(-15,101,59)" fill="#5BB85D"/>
+      <ellipse cx="102" cy="46" rx="6" ry="10" transform="rotate(10,102,46)"  fill="#5BB85D"/>
+      <ellipse cx="97"  cy="34" rx="6" ry="10" transform="rotate(33,97,34)"   fill="#5BB85D"/>
+      <ellipse cx="88"  cy="25" rx="5.5" ry="9" transform="rotate(55,88,25)"  fill="#5BB85D"/>
+      <circle cx="55" cy="51" r="34" fill="url(#blu5)" filter="url(#ms5)"/>
+      <circle cx="55" cy="51" r="34" fill="none" stroke="#0277BD" stroke-width="1.5" opacity="0.35"/>
+      <ellipse cx="43" cy="38" rx="12" ry="8" fill="white" opacity="0.25" transform="rotate(-20,43,38)"/>
+      <text x="55" y="62" text-anchor="middle" font-size="32" font-weight="900" font-family="Arial Black,sans-serif" fill="#01579B">5</text>
     </svg>`
   ];
 
@@ -698,9 +636,9 @@ function renderTop5(data, months) {
 
   document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-     <div class="top5-rank rank-${i+1}" style="width:44px;height:44px;background:none;border:none;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-  ${rankIcons[i]}
-</div>
+      <div class="top5-rank rank-${i+1}" style="width:52px;height:80px;background:none;border:none;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+        ${rankIcons[i]}
+      </div>
       <div class="top5-info">
         <div class="top5-name">${s.name} <span style="font-size:10px;color:var(--text-dim)">#${s.order}</span></div>
         <div class="top5-company">${s.source}</div>
@@ -710,9 +648,6 @@ function renderTop5(data, months) {
     </div>`).join('') || `<div style="color:var(--text-muted);text-align:center;padding:20px">ไม่มีข้อมูล</div>`;
 }
 
-// ============================================================
-// RENDER TABLE
-// ============================================================
 function renderTable(data, months) {
   const titleLabels = { good:'📋 Service ที่ได้คะแนนดี (≥ 90%)', mid:'📋 Service ที่ได้คะแนนปานกลาง (80–89.99%)', bad:'📋 Service ที่ได้คะแนนต่ำ (≤ 79.99%)' };
   document.getElementById('tableTitle').textContent = activeKpiFilter ? titleLabels[activeKpiFilter] : '📋 รายการ Service ทั้งหมด';
@@ -739,18 +674,12 @@ function renderTable(data, months) {
   });
 }
 
-// ============================================================
-// SELECT SERVICE
-// ============================================================
 function selectService(uid) {
   activeServiceUid = activeServiceUid === uid ? null : uid;
   if (activeServiceUid) activeKpiFilter = null;
   applyFilters();
 }
 
-// ============================================================
-// RENDER CHART
-// ============================================================
 function renderChartTotal(data, selectedMonth, year, rawData) {
   document.getElementById('chartTitle').textContent = '📈 คะแนน TOTAL รายเดือน';
   document.getElementById('chartTitle').classList.remove('highlight');
