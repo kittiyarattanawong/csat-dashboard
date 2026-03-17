@@ -417,11 +417,13 @@ function showLoading(on) {
 function getScore(s, month) { const v = s.scores[month]; return (v !== null && v !== undefined) ? v : null; }
 function scoreClass(v) {
   if (v === null || v === undefined) return 'score-neutral';
-  if (v >= 90) return 'score-green'; if (v >= 80) return 'score-yellow'; return 'score-red';
+  const r = Math.round(v * 100) / 100;
+  if (r >= 90) return 'score-green'; if (r >= 80) return 'score-yellow'; return 'score-red';
 }
 function scoreColorVar(v) {
   if (v === null || v === undefined) return currentTheme === 'dark' ? '#555' : '#bbb';
-  if (v >= 90) return '#56d97b'; if (v >= 80) return '#f0c040'; return '#e85c4a';
+  const r = Math.round(v * 100) / 100;
+  if (r >= 90) return '#56d97b'; if (r >= 80) return '#f0c040'; return '#e85c4a';
 }
 function getColF(s, months) {
   if (months.length === 1) return getScore(s, months[0]);
@@ -444,8 +446,8 @@ function getActiveMonths(month) {
   return month === 'all' ? [1,2,3,4,5,6,7,8,9,10,11,12] : [parseInt(month)];
 }
 function getFilteredTableData(data, months) {
-  if (activeKpiFilter === 'good') return data.filter(s => { const v = getColF(s,months); return v!==null && v>=90; });
-  if (activeKpiFilter === 'mid')  return data.filter(s => { const v = getColF(s,months); return v!==null && v>=80 && v<90; });
+  if (activeKpiFilter === 'good') return data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=90; });
+  if (activeKpiFilter === 'mid')  return data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=80 && Math.round(v*100)/100<90; });
   if (activeKpiFilter === 'bad')  return data.filter(s => { const v = getColF(s,months); return v!==null && v<80; });
   return data;
 }
@@ -455,8 +457,8 @@ function applyFilters() {
   const months = getActiveMonths(month);
   const rawData = allData[year] || [];
 
-  const good = data.filter(s => { const v = getColF(s,months); return v!==null && v>=90; });
-  const mid  = data.filter(s => { const v = getColF(s,months); return v!==null && v>=80 && v<90; });
+  const good = data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=90; });
+  const mid  = data.filter(s => { const v = getColF(s,months); return v!==null && Math.round(v*100)/100>=80 && Math.round(v*100)/100<90; });
   const bad  = data.filter(s => { const v = getColF(s,months); return v!==null && v<80; });
   const count = good.length + mid.length + bad.length;
 
