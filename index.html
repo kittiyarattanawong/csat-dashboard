@@ -159,7 +159,7 @@
     <span class="search-icon">🔍</span>
     <input class="search-input" id="searchInput" type="text" placeholder="ค้นหา Service..." oninput="applyFilters()">
   </div>
-  <span class="type-label">Source Data :</span>
+  <span class="type-label">ประเภทแบบสำรวจ :</span>
   <div class="tag-group" id="tagGroup">
     <span class="tag active" data-type="all" onclick="selectTag(this)">All</span>
     <span class="tag" data-type="CSAT Survey" onclick="selectTag(this)">CSAT Survey</span>
@@ -380,15 +380,29 @@ function applyFilters(){
 }
 
 function renderKPI(rawData,count,good,mid,bad){
-  // ถ้ามี filter (source/search) ให้คำนวณ total จาก filtered data แทน masterTotal
-  const{data,month}=getBaseData();
+  const{data,month,year}=getBaseData();
   const months=getActiveMonths(month);
   let totalVal;
   const isFiltered=activeType!=='all'||document.getElementById('searchInput').value!=='';
-  if(isFiltered){
+
+  if(activeServiceUid){
+    // เลือก 1 service → แสดงคะแนน avg ของ service นั้น
+    const svc=(allData[year]||[]).find(s=>s.uid===activeServiceUid);
+    if(svc){
+      const vals=months.map(m=>getScore(svc,m)).filter(v=>v!==null);
+      totalVal=vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)):0;
+    } else { totalVal=0; }
+  } else if(activeKpiFilter){
+    // เลือก kpi filter → คำนวณ avg เฉพาะกลุ่มนั้น
+    const filtered=getFilteredTableData(data,months);
+    const vals=filtered.map(s=>getColF(s,months)).filter(v=>v!==null);
+    totalVal=vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)):0;
+  } else if(isFiltered){
+    // เลือก source data / search → คำนวณ avg จาก filtered data
     const vals=data.map(s=>getColF(s,months)).filter(v=>v!==null);
     totalVal=vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)):0;
-  }else{
+  } else {
+    // ไม่ได้เลือกอะไร → masterTotal เหมือนเดิม
     totalVal=rawData.masterTotal!==null?rawData.masterTotal:0;
   }
   const totalClass=totalVal>=90?'green':totalVal>=80?'yellow':'red';
