@@ -119,7 +119,7 @@
   <div class="header-right">
     <div class="legend-row">
       <div class="legend-item"><span class="legend-dot dot-green"></span><span class="text-green">≥ 90.00%</span></div>
-      <div class="legend-item"><span class="legend-dot dot-yellow"></span><span class="text-yellow">80.00–89.99%</span></div>
+      <div class="legend-item"><span class="legend-dot dot-yellow"></span><span class="text-yellow">80.00–88.99%</span></div>
       <div class="legend-item"><span class="legend-dot dot-red"></span><span class="text-red">≤ 79.99%</span></div>
     </div>
   </div>
@@ -159,7 +159,7 @@
     <span class="search-icon">🔍</span>
     <input class="search-input" id="searchInput" type="text" placeholder="ค้นหา Service..." oninput="applyFilters()">
   </div>
-  <span class="type-label">Source Data :</span>
+  <span class="type-label">ประเภทแบบสำรวจ :</span>
   <div class="tag-group" id="tagGroup">
     <span class="tag active" data-type="all" onclick="selectTag(this)">All</span>
     <span class="tag" data-type="CSAT Survey" onclick="selectTag(this)">CSAT Survey</span>
@@ -174,7 +174,7 @@
     <div class="chart-area"><canvas id="trendChart"></canvas></div>
   </div>
   <div class="panel">
-    <div class="panel-title">🏆 Top 5 Services </div>
+    <div class="panel-title">🏆 5 อันดับ SERVICE ที่ดีที่สุด</div>
     <div class="top5-list" id="top5List"></div>
   </div>
 </div>
@@ -380,7 +380,17 @@ function applyFilters(){
 }
 
 function renderKPI(rawData,count,good,mid,bad){
-  const totalVal=rawData.masterTotal!==null?rawData.masterTotal:0;
+  // ถ้ามี filter (source/search) ให้คำนวณ total จาก filtered data แทน masterTotal
+  const{data,month}=getBaseData();
+  const months=getActiveMonths(month);
+  let totalVal;
+  const isFiltered=activeType!=='all'||document.getElementById('searchInput').value!=='';
+  if(isFiltered){
+    const vals=data.map(s=>getColF(s,months)).filter(v=>v!==null);
+    totalVal=vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)):0;
+  }else{
+    totalVal=rawData.masterTotal!==null?rawData.masterTotal:0;
+  }
   const totalClass=totalVal>=90?'green':totalVal>=80?'yellow':'red';
   const totalTextClass=totalVal>=90?'text-green':totalVal>=80?'text-yellow':'text-red';
   document.getElementById('kpiRow').innerHTML=`
