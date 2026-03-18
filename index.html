@@ -481,64 +481,94 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 function renderTop5(data, months) {
-  // ===== rankIcons — คำนวณพิกัดใบลอเรลบน arc จริง =====
-  // viewBox 160x112: medal cx=80,cy=56,r=34 | wreath arc ทั้งสองข้าง
-  // ใบลอเรลจากรูป: oval เล็กๆ เรียงชิดกันบน arc โค้ง ไม่มีก้าน
-  function buildWreath(side, wFill, wOp) {
-    // arc center อยู่ที่ cx=80,cy=56 ใช้ arc รัศมี 52 วงนอก
-    // ใบ 8 ใบต่อข้าง เรียงตั้งแต่มุม 210°→120° (ซ้าย) / 330°→60° (ขวา)
-    const cx=80, cy=56, arcR=52;
-    const count=8;
-    // ซ้าย: มุม 125°..215° (วัดจากบนตามเข็มนาฬิกา, 0°=ขวา)
-    // ขวา: mirror
-    const startDeg = side==='L' ? 215 : -35;
-    const endDeg   = side==='L' ? 125 :  55;
-    const out = [];
-    for(let i=0;i<count;i++){
-      const t = i/(count-1);
-      const deg = startDeg + t*(endDeg-startDeg);
-      const rad = deg*Math.PI/180;
-      const lx = cx + arcR*Math.cos(rad);
-      const ly = cy + arcR*Math.sin(rad);
-      // ใบหันตั้งฉากกับ arc (tangent angle)
-      const tanDeg = deg + 90;
-      // ขนาดใบ: เล็กลงที่ปลายทั้งสอง
-      const edgeFactor = 1 - 0.25*Math.abs(t-0.5)*2;
-      const lrx = 7.5*edgeFactor, lry = 3.8*edgeFactor;
-      out.push(`<ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="${lrx.toFixed(1)}" ry="${lry.toFixed(1)}" transform="rotate(${tanDeg.toFixed(1)} ${lx.toFixed(1)} ${ly.toFixed(1)})" fill="${wFill}" opacity="${wOp}"/>`);
-    }
-    return out.join('');
-  }
+  // ===== rankIcons — laurel wreath ใบคู่บนก้านโค้ง ตรงรูป reference =====
+  // viewBox 200x130, medal กลาง cx=100,cy=65,r=38
+  // wreath: ก้านโค้งสองข้าง + ใบคู่ 6 คู่ต่อข้าง (ใบบน+ใบล่างที่จุดเดียวกันบนก้าน)
 
-  function medal(n, o1, o2, i1, i2, nFill, wFill, wOp) {
-    return `<svg width="72" height="72" viewBox="0 0 160 112" xmlns="http://www.w3.org/2000/svg">
+  function makeMedal(num, ballColor1, ballColor2, innerColor1, innerColor2, numColor, leafColor) {
+    // --- ก้านและใบลอเรล ---
+    // แต่ละข้าง: 6 จุดบนก้านโค้ง แต่ละจุดมีใบ 2 ใบ (บน/ล่าง) หันออกจากก้าน
+    // ซ้าย: arc จาก (30,105) โค้งผ่าน (18,65) ถึง (45,28)
+    // ขวา: mirror
+
+    // พิกัด 6 จุดบนก้านซ้าย (x,y) + มุมก้าน (tangent deg) + ระยะใบ
+    const stemPtsL = [
+      { x:32, y:98, t: -65 },
+      { x:24, y:84, t: -80 },
+      { x:20, y:70, t: -95 },
+      { x:21, y:55, t:-110 },
+      { x:27, y:42, t:-125 },
+      { x:38, y:31, t:-140 },
+    ];
+
+    function leafPair(x, y, tDeg, leafColor, isRight) {
+      // ใบ 2 ใบ: หนึ่งอยู่ด้านนอก (away from center) หนึ่งอยู่ด้านใน
+      // ใบแต่ละใบ: ellipse rx=9,ry=4.5 หันตามก้าน
+      const r = Math.PI / 180;
+      // ใบนอก: ออกจากก้านตั้งฉาก 90° จาก tangent
+      const perpOut = tDeg - 90;  // ฉากออกนอก
+      const perpIn  = tDeg + 90;  // ฉากเข้าใน
+      const d = 7; // ระยะจากก้านถึงกลางใบ
+      const ox = x + d * Math.cos(perpOut * r);
+      const oy = y + d * Math.sin(perpOut * r);
+      const ix = x + d * Math.cos(perpIn  * r);
+      const iy = y + d * Math.sin(perpIn  * r);
+      // flip สำหรับขวา
+      const ex  = isRight ? 200 - x  : x;
+      const eox = isRight ? 200 - ox : ox;
+      const eix = isRight ? 200 - ix : ix;
+      const tR  = isRight ? 180 - tDeg : tDeg;
+      const pOR = isRight ? 180 - perpOut : perpOut;
+      const pIR = isRight ? 180 - perpIn  : perpIn;
+      return `
+  <ellipse cx="${eox.toFixed(1)}" cy="${oy.toFixed(1)}" rx="9" ry="4.2" transform="rotate(${(isRight?180-tDeg:tDeg).toFixed(1)} ${eox.toFixed(1)} ${oy.toFixed(1)})" fill="${leafColor}"/>
+  <ellipse cx="${eix.toFixed(1)}" cy="${iy.toFixed(1)}" rx="8" ry="3.8" transform="rotate(${(isRight?180-tDeg:tDeg).toFixed(1)} ${eix.toFixed(1)} ${iy.toFixed(1)})" fill="${leafColor}" opacity="0.85"/>`;
+    }
+
+    // ก้านซ้าย (path โค้ง)
+    const stemL = `<path d="M62,108 C50,100 22,88 20,65 C18,42 38,25 58,18" fill="none" stroke="${leafColor}" stroke-width="2" stroke-linecap="round" opacity="0.7"/>`;
+    const stemR = `<path d="M138,108 C150,100 178,88 180,65 C182,42 162,25 142,18" fill="none" stroke="${leafColor}" stroke-width="2" stroke-linecap="round" opacity="0.7"/>`;
+
+    // สร้างใบทุกคู่
+    let allLeaves = '';
+    for (const pt of stemPtsL) {
+      allLeaves += leafPair(pt.x, pt.y, pt.t, leafColor, false); // ซ้าย
+      allLeaves += leafPair(pt.x, pt.y, pt.t, leafColor, true);  // ขวา (mirror)
+    }
+
+    return `<svg width="72" height="72" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="mo${n}" cx="34%" cy="28%" r="68%">
-      <stop offset="0%" stop-color="${o1}"/>
-      <stop offset="55%" stop-color="${o2}"/>
-      <stop offset="100%" stop-color="${o2}"/>
+    <radialGradient id="bg${num}" cx="35%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="${ballColor1}"/>
+      <stop offset="60%" stop-color="${ballColor2}"/>
+      <stop offset="100%" stop-color="${ballColor2}"/>
     </radialGradient>
-    <radialGradient id="mi${n}" cx="34%" cy="28%" r="68%">
-      <stop offset="0%" stop-color="${i1}"/>
-      <stop offset="50%" stop-color="${i2}"/>
-      <stop offset="100%" stop-color="${o2}"/>
+    <radialGradient id="ig${num}" cx="35%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="${innerColor1}"/>
+      <stop offset="55%" stop-color="${innerColor2}"/>
+      <stop offset="100%" stop-color="${ballColor2}"/>
     </radialGradient>
   </defs>
-  ${buildWreath('L',wFill,wOp)}
-  ${buildWreath('R',wFill,wOp)}
-  <circle cx="80" cy="56" r="35" fill="url(#mo${n})"/>
-  <circle cx="80" cy="56" r="27" fill="url(#mi${n})"/>
-  <ellipse cx="70" cy="44" rx="11" ry="7" fill="white" opacity="0.22" transform="rotate(-25 70 44)"/>
-  <text x="80" y="68" font-size="29" text-anchor="middle" fill="${nFill}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${n}</text>
+  ${stemL}${stemR}
+  ${allLeaves}
+  <circle cx="100" cy="65" r="40" fill="url(#bg${num})"/>
+  <circle cx="100" cy="65" r="31" fill="url(#ig${num})"/>
+  <ellipse cx="88" cy="52" rx="13" ry="8" fill="white" opacity="0.22" transform="rotate(-25 88 52)"/>
+  <text x="100" y="79" font-size="32" text-anchor="middle" fill="${numColor}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${num}</text>
 </svg>`;
   }
 
   const rankIcons = [
-    medal(1,'#FFE566','#C07800','#FFF5A0','#F5A600','#7A3A00','#43B054','1'),
-    medal(2,'#EEEEEE','#808098','#F8F8FF','#BBBBCC','#38385A','#45B06A','1'),
-    medal(3,'#FFCC55','#A85000','#FFE080','#D07800','#ffffff','#3CAA50','1'),
-    medal(4,'#8899B8','#263648','#AABBCC','#385060','#ffffff','#3A9060','0.82'),
-    medal(5,'#D8E0EE','#8890A8','#EEF0F8','#AAAEBE','#38405A','#52A8A0','0.68'),
+    // 1 ทอง
+    makeMedal(1,'#FFE566','#D4890A','#FFF5AA','#F5A800','#8B4A00','#4CAF60'),
+    // 2 เงิน
+    makeMedal(2,'#EEEEEE','#909098','#F8F8FF','#C4C4CC','#444458','#50B070'),
+    // 3 บรอนซ์/ส้ม
+    makeMedal(3,'#FFA040','#C05808','#FFD080','#E07020','#7A2800','#3DAA55'),
+    // 4 เขียว
+    makeMedal(4,'#AADD55','#5A9010','#DDEF88','#88CC22','#2A5000','#3A9848'),
+    // 5 ฟ้า
+    makeMedal(5,'#88CCFF','#2278CC','#CCE8FF','#55AAEE','#003878','#3A8898'),
   ];
   // ===== จบส่วน rankIcons =====
 
