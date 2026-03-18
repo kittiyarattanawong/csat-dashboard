@@ -481,95 +481,65 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 function renderTop5(data, months) {
-  // ===== rankIcons — ลอเรลใบย่อยสองข้าง เหมือนรูป reference เป๊ะ =====
-  function makeMedalSVG(num, cfg) {
-    // cfg: { outerA, outerB, innerA, innerB, numFill, laurelFill, laurelOpacity }
-    // ใบลอเรล: ก้านโค้ง + ใบ 6 คู่แต่ละข้าง (เหมือนรูป)
-    function laurelSide(flip) {
-      const f = flip ? -1 : 1;
-      // วางก้านโค้งจากล่างขึ้นบน แล้ว stamp ใบ 6 ระดับ
-      const cx = 60, cy = 62;
-      const stemR = 38; // รัศมีโค้งก้าน
-      // ตำแหน่ง 6 ใบ (มุม + ระยะ)
-      const leaves = [
-        { angle: -72, dist: 36, leafA: 10, leafB: 5, rot: -60 },
-        { angle: -52, dist: 41, leafA: 10, leafB: 5, rot: -40 },
-        { angle: -30, dist: 44, leafA: 10, leafB: 5, rot: -18 },
-        { angle: -8,  dist: 45, leafA: 10, leafB: 5, rot:   5 },
-        { angle:  16, dist: 43, leafA: 10, leafB: 5, rot:  28 },
-        { angle:  38, dist: 39, leafA: 9,  leafB: 4.5, rot: 50 },
+  // ===== rankIcons — medal + wreath ตรงตามรูป reference =====
+  function medal(n, o1, o2, i1, i2, nFill, wFill, wOp) {
+    // ก้านลอเรล: SVG path โค้งสองข้าง + ใบย่อย 6 ใบต่อข้าง
+    // viewBox 140x110: medal กลาง (cx=70,cy=52,r=34), wreath ยื่นออกข้าง
+    function leaves(side) {
+      // side: 'L'=ซ้าย, 'R'=ขวา
+      // ใบ 6 ใบ วางตามแนวโค้งจากล่างไปบน
+      const cx = 70, cy = 54;
+      const configs = [
+        // [dx_from_center, dy_from_center, angle_deg, rx, ry]
+        [-42,  20,  -50, 8, 4],
+        [-46,   4,  -68, 8, 4],
+        [-44, -12,  -82, 8, 4],
+        [-38, -26,  -98, 7.5, 3.8],
+        [-28, -38, -115, 7, 3.5],
+        [-15, -46, -135, 6.5, 3.2],
       ];
-      return leaves.map(l => {
-        const rad = (l.angle) * Math.PI / 180;
-        const lx = cx + f * (l.dist * Math.cos(rad));
-        const ly = cy + l.dist * Math.sin(rad);
-        const rotDeg = flip ? (180 - l.rot) : l.rot;
-        return `<ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="${l.leafA}" ry="${l.leafB}" transform="rotate(${rotDeg} ${lx.toFixed(1)} ${ly.toFixed(1)})"/>`;
+      return configs.map(([dx, dy, ang, rx, ry]) => {
+        let ex = cx + dx, ey = cy + dy, a = ang;
+        if (side === 'R') { ex = cx + (-dx); a = 180 - ang; }
+        return `<ellipse cx="${ex}" cy="${ey}" rx="${rx}" ry="${ry}" transform="rotate(${a} ${ex} ${ey})" fill="${wFill}" opacity="${wOp}"/>`;
       }).join('');
     }
-    return `<svg width="64" height="64" viewBox="0 0 120 124" xmlns="http://www.w3.org/2000/svg">
+    // ก้านโค้งกลาง (path)
+    const stemL = `<path d="M70,88 Q28,75 22,30" fill="none" stroke="${wFill}" stroke-width="2.2" stroke-linecap="round" opacity="${wOp}"/>`;
+    const stemR = `<path d="M70,88 Q112,75 118,30" fill="none" stroke="${wFill}" stroke-width="2.2" stroke-linecap="round" opacity="${wOp}"/>`;
+    return `<svg width="68" height="68" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="ri_outer_${num}" cx="38%" cy="32%" r="62%">
-      <stop offset="0%" stop-color="${cfg.outerA}"/>
-      <stop offset="100%" stop-color="${cfg.outerB}"/>
+    <radialGradient id="mo${n}" cx="36%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="${o1}"/>
+      <stop offset="100%" stop-color="${o2}"/>
     </radialGradient>
-    <radialGradient id="ri_inner_${num}" cx="38%" cy="32%" r="62%">
-      <stop offset="0%" stop-color="${cfg.innerA}"/>
-      <stop offset="60%" stop-color="${cfg.innerB}"/>
-      <stop offset="100%" stop-color="${cfg.outerB}"/>
+    <radialGradient id="mi${n}" cx="36%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="${i1}"/>
+      <stop offset="55%" stop-color="${i2}"/>
+      <stop offset="100%" stop-color="${o2}"/>
     </radialGradient>
-    <filter id="ri_sh_${num}" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000040"/>
-    </filter>
   </defs>
-  <!-- ใบลอเรลซ้าย -->
-  <g fill="${cfg.laurelFill}" opacity="${cfg.laurelOpacity}">${laurelSide(false)}</g>
-  <!-- ใบลอเรลขวา -->
-  <g fill="${cfg.laurelFill}" opacity="${cfg.laurelOpacity}">${laurelSide(true)}</g>
-  <!-- วงนอก -->
-  <circle cx="60" cy="58" r="38" fill="url(#ri_outer_${num})" filter="url(#ri_sh_${num})"/>
-  <!-- วงใน -->
-  <circle cx="60" cy="58" r="30" fill="url(#ri_inner_${num})"/>
-  <!-- ไฮไลต์ขอบบน -->
-  <ellipse cx="50" cy="44" rx="14" ry="9" fill="white" opacity="0.25" transform="rotate(-20 50 44)"/>
-  <!-- ตัวเลข -->
-  <text x="60" y="70" font-size="34" text-anchor="middle" dominant-baseline="auto"
-        fill="${cfg.numFill}" font-weight="900" font-family="Arial Black,Arial,sans-serif"
-        style="paint-order:stroke" stroke="${cfg.numFill === '#fff' ? 'none' : 'none'}">${num}</text>
+  ${stemL}${stemR}
+  ${leaves('L')}${leaves('R')}
+  <circle cx="70" cy="52" r="36" fill="${o2}" opacity="0.35"/>
+  <circle cx="70" cy="52" r="36" fill="url(#mo${n})"/>
+  <circle cx="70" cy="52" r="28" fill="url(#mi${n})"/>
+  <ellipse cx="59" cy="40" rx="13" ry="8" fill="white" opacity="0.20" transform="rotate(-25 59 40)"/>
+  <text x="70" y="64" font-size="30" text-anchor="middle" fill="${nFill}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${n}</text>
 </svg>`;
   }
 
   const rankIcons = [
-    // 1 - ทอง
-    makeMedalSVG(1, {
-      outerA:'#FFE066', outerB:'#D4860A',
-      innerA:'#FFF0A0', innerB:'#F5A800',
-      numFill:'#8B4500', laurelFill:'#3DAA5C', laurelOpacity:'1'
-    }),
-    // 2 - เงิน
-    makeMedalSVG(2, {
-      outerA:'#E8E8E8', outerB:'#7A7A8A',
-      innerA:'#F8F8FF', innerB:'#ADADBE',
-      numFill:'#3A3A50', laurelFill:'#4CAF70', laurelOpacity:'1'
-    }),
-    // 3 - ทองแดง/บรอนซ์
-    makeMedalSVG(3, {
-      outerA:'#FFBE55', outerB:'#A05000',
-      innerA:'#FFD080', innerB:'#CC7A10',
-      numFill:'#ffffff', laurelFill:'#3DAA5C', laurelOpacity:'1'
-    }),
-    // 4 - น้ำเงินเทา
-    makeMedalSVG(4, {
-      outerA:'#8899B0', outerB:'#2E3A4E',
-      innerA:'#AAB8CC', innerB:'#445566',
-      numFill:'#ffffff', laurelFill:'#4A9070', laurelOpacity:'0.85'
-    }),
-    // 5 - เงินอ่อน
-    makeMedalSVG(5, {
-      outerA:'#D8DDE8', outerB:'#8890A0',
-      innerA:'#EEF0F8', innerB:'#A8AEBE',
-      numFill:'#3A4055', laurelFill:'#6AADA8', laurelOpacity:'0.75'
-    }),
+    // 1 ทอง
+    medal(1,'#FFE566','#C47A00','#FFF8B0','#F5A800','#7A3D00','#4CAF5A','1'),
+    // 2 เงิน
+    medal(2,'#F0F0F4','#8888A0','#FAFAFF','#C0C0D0','#3A3A55','#4CAF70','1'),
+    // 3 ทองแดง/บรอนซ์
+    medal(3,'#FFCC66','#AA5500','#FFE08A','#CC7700','#ffffff','#3DAA55','1'),
+    // 4 น้ำเงินเทาเข้ม
+    medal(4,'#9AAABB','#2C3E55','#AABBCC','#3D5060','#ffffff','#4A9070','0.85'),
+    // 5 เงินอ่อน/ฟ้าอมเทา
+    medal(5,'#DDE4EE','#9AA0B4','#EEF2FA','#B0B8CC','#3A4255','#5AADA8','0.7'),
   ];
   // ===== จบส่วน rankIcons =====
 
@@ -578,7 +548,7 @@ function renderTop5(data, months) {
 
   document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-      <div style="width:64px;height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+      <div style="width:68px;height:68px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
         ${rankIcons[i]}
       </div>
       <div class="top5-info">
