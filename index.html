@@ -223,7 +223,7 @@ function makeTrophy(rank){
     {cup:'#CCFFDD',cup2:'#0D7A40',rim1:'#99EEBB',rim2:'#22AA66',base:'#085C2A',handle:'#118844',circle:'#EAFFF4',cs:'#118844',num:'#053A18',sp:'#99EEBB',sp2:'#DDFFF0',sp3:'#22AA66'},
   ];
   const c=cfg[rank-1];
-  return `<svg width="48" height="64" viewBox="0 0 88 102" xmlns="http://www.w3.org/2000/svg">
+  return `<svg width="48" height="58" viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <linearGradient id="trb${rank}" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0%" stop-color="${c.rim1}"/>
@@ -235,28 +235,28 @@ function makeTrophy(rank){
     <stop offset="100%" stop-color="${c.cup2}"/>
   </linearGradient>
 </defs>
-<!-- base plate -->
-<rect x="16" y="92" width="56" height="8" rx="4" fill="${c.base}"/>
-<!-- stem - ชิดกับถ้วยและฐาน -->
-<rect x="35" y="80" width="18" height="13" rx="2" fill="${c.base}"/>
-<!-- cup body -->
-<path d="M14 14 Q12 46 22 62 Q30 74 44 76 Q58 74 66 62 Q76 46 74 14 Z" fill="url(#trs${rank})" stroke="${c.handle}" stroke-width="2"/>
-<!-- shine -->
-<path d="M20 20 Q18 42 24 56 Q28 66 34 68" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity=".28"/>
-<!-- handles -->
-<path d="M14 26 Q2 26 2 40 Q2 54 14 52" fill="none" stroke="${c.handle}" stroke-width="4.5" stroke-linecap="round"/>
-<path d="M74 26 Q86 26 86 40 Q86 54 74 52" fill="none" stroke="${c.handle}" stroke-width="4.5" stroke-linecap="round"/>
 <!-- rim -->
-<rect x="10" y="10" width="68" height="9" rx="4" fill="url(#trb${rank})" stroke="${c.handle}" stroke-width="1.5"/>
+<rect x="10" y="6" width="68" height="8" rx="4" fill="url(#trb${rank})" stroke="${c.handle}" stroke-width="1.5"/>
+<!-- cup body -->
+<path d="M14 10 Q12 42 22 56 Q30 67 44 69 Q58 67 66 56 Q76 42 74 10 Z" fill="url(#trs${rank})" stroke="${c.handle}" stroke-width="2"/>
+<!-- handles -->
+<path d="M14 22 Q2 22 2 36 Q2 50 14 48" fill="none" stroke="${c.handle}" stroke-width="4.5" stroke-linecap="round"/>
+<path d="M74 22 Q86 22 86 36 Q86 50 74 48" fill="none" stroke="${c.handle}" stroke-width="4.5" stroke-linecap="round"/>
+<!-- shine -->
+<path d="M20 16 Q18 38 24 50 Q28 60 34 62" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity=".28"/>
 <!-- number circle -->
-<circle cx="44" cy="46" r="18" fill="${c.circle}" stroke="${c.cs}" stroke-width="1.5"/>
-<text x="44" y="53" font-size="22" font-weight="900" text-anchor="middle" fill="${c.num}" font-family="Georgia,serif">${rank}</text>
+<circle cx="44" cy="40" r="18" fill="${c.circle}" stroke="${c.cs}" stroke-width="1.5"/>
+<text x="44" y="47" font-size="22" font-weight="900" text-anchor="middle" fill="${c.num}" font-family="Georgia,serif">${rank}</text>
+<!-- stem ชิดกับก้นถ้วย -->
+<rect x="35" y="69" width="18" height="10" rx="2" fill="${c.base}"/>
+<!-- base plate ชิดกับ stem -->
+<rect x="18" y="79" width="52" height="7" rx="3" fill="${c.base}"/>
 <!-- sparkles -->
-<circle class="tsp" cx="6"  cy="5"  r="2.5" fill="${c.sp}"/>
-<circle class="tsp" cx="82" cy="4"  r="2.2" fill="${c.sp}"/>
-<circle class="tsp" cx="44" cy="2"  r="2"   fill="${c.sp2}"/>
-<circle class="tsp" cx="6"  cy="98" r="1.8" fill="${c.sp3}"/>
-<circle class="tsp" cx="82" cy="98" r="1.8" fill="${c.sp3}"/>
+<circle class="tsp" cx="6"  cy="4"  r="2.5" fill="${c.sp}"/>
+<circle class="tsp" cx="82" cy="3"  r="2.2" fill="${c.sp}"/>
+<circle class="tsp" cx="44" cy="1"  r="2"   fill="${c.sp2}"/>
+<circle class="tsp" cx="6"  cy="86" r="1.8" fill="${c.sp3}"/>
+<circle class="tsp" cx="82" cy="86" r="1.8" fill="${c.sp3}"/>
 </svg>`;
 }
 const trophyBadges=[1,2,3,4,5].map(makeTrophy);
