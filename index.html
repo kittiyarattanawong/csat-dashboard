@@ -482,49 +482,74 @@ function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = nu
 
 function renderTop5(data, months) {
   // ===== rankIcons — ใบ hardcode บน circle r=58 รอบเหรียญ cx=70,cy=70 =====
-  const cfg = [
-    { outer:'#F7D774', g1:'#FFE27A', g2:'#F5B700', tc:'#E08A2E' },
-    { outer:'#D1D5DB', g1:'#E5E7EB', g2:'#9CA3AF', tc:'#4B5563' },
-    { outer:'#FDBA74', g1:'#F6AD55', g2:'#DD6B20', tc:'#7B341E' },
-    { outer:'#BEF264', g1:'#C6E377', g2:'#84CC16', tc:'#166534' },
-    { outer:'#7DD3FC', g1:'#BAE6FD', g2:'#0284C7', tc:'#1E3A8A' },
-  ];
-
-  // ใบซ้าย 6 ใบ: arc 120°→240°, ใบขวา 6 ใบ: arc 60°→-60°
-  // bottom 3 ใบ: arc 245°→295°
-  // rx=6,ry=12 เหมือน user code เดิม
-  const leavesL = [
-    [41.0,120.2,210],[23.1,104.1,234],[13.3,82.1,258],
-    [13.3,57.9,282],[23.1,35.9,306],[41.0,19.8,330]
-  ];
-  const leavesR = [
-    [99.0,120.2,-30],[116.9,104.1,-54],[126.7,82.1,-78],
-    [126.7,57.9,-102],[116.9,35.9,-126],[99.0,19.8,-150]
-  ];
-  const leavesB = [
-    [51.0,126.2,248],[70.0,128.0,270],[89.0,126.2,292]
-  ];
-
-  const wreathSVG = [...leavesL,...leavesR,...leavesB]
-    .map(([cx,cy,rot])=>`<ellipse cx="${cx}" cy="${cy}" rx="6" ry="12" transform="rotate(${rot} ${cx} ${cy})"/>`)
-    .join('');
-
-  const rankIcons = cfg.map((c,idx) => {
-    const n = idx+1;
-    return `<svg width="88" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="rg${n}">
-      <stop offset="0%" stop-color="${c.g1}"/>
-      <stop offset="100%" stop-color="${c.g2}"/>
-    </radialGradient>
-  </defs>
-  <g fill="#4CAF7D">${wreathSVG}</g>
-  <circle cx="70" cy="70" r="42" fill="${c.outer}"/>
-  <circle cx="70" cy="70" r="34" fill="url(#rg${n})"/>
-  <circle cx="70" cy="70" r="34" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
-  <text x="70" y="82" font-size="36" text-anchor="middle" font-weight="bold" fill="${c.tc}" font-family="Arial,sans-serif">${n}</text>
-</svg>`;
-  });
+  const badges = [
+  // 🥇 Gold
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:88px;filter:drop-shadow(0 0 8px rgba(255,255,255,0.35))">
+    <rect x="35" y="0" width="10" height="30" fill="#38bdf8"/>
+    <rect x="45" y="0" width="10" height="30" fill="#fb7185"/>
+    <circle cx="50" cy="60" r="32" fill="#facc15" opacity="0.25"/>
+    <circle cx="50" cy="60" r="30" fill="#facc15"/>
+    <circle cx="50" cy="60" r="22" fill="#f59e0b"/>
+    <ellipse cx="58" cy="48" rx="14" ry="9" fill="white" opacity="0.25"/>
+    <circle class="sparkle" cx="20" cy="30" r="2"/>
+    <circle class="sparkle" cx="80" cy="35" r="2"/>
+    <circle class="sparkle" cx="25" cy="80" r="2"/>
+    <circle class="sparkle" cx="75" cy="85" r="2"/>
+    <text x="50" y="60" font-size="42" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial,sans-serif">1</text>
+  </svg>`,
+  // 🥈 Silver
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:88px;filter:drop-shadow(0 0 8px rgba(255,255,255,0.35))">
+    <rect x="35" y="0" width="20" height="30" fill="#94a3b8"/>
+    <circle cx="50" cy="60" r="32" fill="#e5e7eb" opacity="0.25"/>
+    <circle cx="50" cy="60" r="30" fill="#d1d5db"/>
+    <circle cx="50" cy="60" r="22" fill="#f3f4f6"/>
+    <ellipse cx="58" cy="48" rx="14" ry="9" fill="white" opacity="0.25"/>
+    <circle class="sparkle" cx="20" cy="30" r="2"/>
+    <circle class="sparkle" cx="80" cy="35" r="2"/>
+    <circle class="sparkle" cx="25" cy="80" r="2"/>
+    <circle class="sparkle" cx="75" cy="85" r="2"/>
+    <text x="50" y="60" font-size="42" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#333" font-family="Arial,sans-serif">2</text>
+  </svg>`,
+  // 🥉 Bronze
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:88px;filter:drop-shadow(0 0 8px rgba(255,255,255,0.35))">
+    <rect x="35" y="0" width="20" height="30" fill="#f97316"/>
+    <circle cx="50" cy="60" r="32" fill="#fdba74" opacity="0.25"/>
+    <circle cx="50" cy="60" r="30" fill="#c2410c"/>
+    <circle cx="50" cy="60" r="22" fill="#fb923c"/>
+    <ellipse cx="58" cy="48" rx="14" ry="9" fill="white" opacity="0.25"/>
+    <circle class="sparkle" cx="20" cy="30" r="2"/>
+    <circle class="sparkle" cx="80" cy="35" r="2"/>
+    <circle class="sparkle" cx="25" cy="80" r="2"/>
+    <circle class="sparkle" cx="75" cy="85" r="2"/>
+    <text x="50" y="60" font-size="42" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial,sans-serif">3</text>
+  </svg>`,
+  // 🏅 Blue
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:88px;filter:drop-shadow(0 0 8px rgba(255,255,255,0.35))">
+    <rect x="35" y="0" width="20" height="30" fill="#1e293b"/>
+    <circle cx="50" cy="60" r="32" fill="#60a5fa" opacity="0.25"/>
+    <circle cx="50" cy="60" r="30" fill="#3b82f6"/>
+    <circle cx="50" cy="60" r="22" fill="#93c5fd"/>
+    <ellipse cx="58" cy="48" rx="14" ry="9" fill="white" opacity="0.25"/>
+    <circle class="sparkle" cx="20" cy="30" r="2"/>
+    <circle class="sparkle" cx="80" cy="35" r="2"/>
+    <circle class="sparkle" cx="25" cy="80" r="2"/>
+    <circle class="sparkle" cx="75" cy="85" r="2"/>
+    <text x="50" y="60" font-size="42" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial,sans-serif">4</text>
+  </svg>`,
+  // 🎖️ Green
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:88px;filter:drop-shadow(0 0 8px rgba(255,255,255,0.35))">
+    <rect x="35" y="0" width="20" height="30" fill="#14532d"/>
+    <circle cx="50" cy="60" r="32" fill="#4ade80" opacity="0.25"/>
+    <circle cx="50" cy="60" r="30" fill="#22c55e"/>
+    <circle cx="50" cy="60" r="22" fill="#86efac"/>
+    <ellipse cx="58" cy="48" rx="14" ry="9" fill="white" opacity="0.25"/>
+    <circle class="sparkle" cx="20" cy="30" r="2"/>
+    <circle class="sparkle" cx="80" cy="35" r="2"/>
+    <circle class="sparkle" cx="25" cy="80" r="2"/>
+    <circle class="sparkle" cx="75" cy="85" r="2"/>
+    <text x="50" y="60" font-size="42" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial,sans-serif">5</text>
+  </svg>`,
+];
   // ===== จบ rankIcons =====
 
   const ranked = data.map(s => ({ ...s, avg: getColF(s,months)||0 }))
