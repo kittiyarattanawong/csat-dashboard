@@ -481,84 +481,71 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 function renderTop5(data, months) {
-  // ===== rankIcons — hardcode ใบลอเรลทุกใบ ตรงรูป target เป๊ะ =====
-  // viewBox 220x140, medal กลาง cx=110,cy=70,r=42
-  // wreath: ใบคู่ 7 คู่ต่อข้าง โค้งจากล่างขึ้นบนรอบเหรียญ
-
-  function leaf(cx, cy, rx, ry, angle, color) {
-    return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" transform="rotate(${angle} ${cx} ${cy})" fill="${color}"/>`;
-  }
-
-  function wreath(lc) {
-    // ใบซ้าย — 7 คู่ (ใบนอก + ใบใน) จากล่างซ้ายวนขึ้นบน
-    // แต่ละ entry: [cx, cy, rx, ry, angle]  — ใบนอก
-    //              [cx, cy, rx, ry, angle]  — ใบใน (เล็กกว่าเล็กน้อย)
-    const leftPairs = [
-      // ล่างสุด
-      [[28,108, 11,5,  50], [40,100, 10,4.5, 40]],
-      // ล่าง
-      [[20, 92, 11,5,  30], [33, 87, 10,4.5, 20]],
-      // ล่าง-กลาง
-      [[16, 75, 11,5,  10], [28, 72, 10,4.5,  0]],
-      // กลาง
-      [[16, 58, 11,5, -10], [28, 57, 10,4.5,-20]],
-      // บน-กลาง
-      [[20, 42, 11,5, -30], [33, 43, 10,4.5,-40]],
-      // บน
-      [[30, 28, 11,5, -50], [42, 31, 10,4.5,-60]],
-      // บนสุด
-      [[45, 17, 10,4.5,-70],[57, 22,  9,4,  -80]],
-    ];
-
-    // สร้าง SVG ใบซ้าย
-    let svg = '';
-    for (const [[ax,ay,arx,ary,aa],[bx,by,brx,bry,ba]] of leftPairs) {
-      svg += leaf(ax,ay,arx,ary,aa,lc) + leaf(bx,by,brx,bry,ba,lc);
-    }
-
-    // ใบขวา — mirror แกน x=110
-    for (const [[ax,ay,arx,ary,aa],[bx,by,brx,bry,ba]] of leftPairs) {
-      svg += leaf(220-ax,ay,arx,ary,-aa,lc) + leaf(220-bx,by,brx,bry,-ba,lc);
-    }
-    return svg;
-  }
-
+  // ===== rankIcons — pre-computed arc positions, viewBox 240x150 =====
   function makeMedal(num, c1, c2, ic1, ic2, nc, lc) {
-    return `<svg width="80" height="80" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
+    const w =
+      `<ellipse cx="56.4" cy="128.4" rx="12" ry="5.5" transform="rotate(230.0 56.4 128.4)" fill="${lc}"/>` +
+      `<ellipse cx="70.2" cy="116.8" rx="11" ry="5.0" transform="rotate(230.0 70.2 116.8)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="183.6" cy="128.4" rx="12" ry="5.5" transform="rotate(-50.0 183.6 128.4)" fill="${lc}"/>` +
+      `<ellipse cx="169.8" cy="116.8" rx="11" ry="5.0" transform="rotate(-50.0 169.8 116.8)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="45.8" cy="112.3" rx="12" ry="5.5" transform="rotate(243.3 45.8 112.3)" fill="${lc}"/>` +
+      `<ellipse cx="61.9" cy="104.2" rx="11" ry="5.0" transform="rotate(243.3 61.9 104.2)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="194.2" cy="112.3" rx="12" ry="5.5" transform="rotate(-63.3 194.2 112.3)" fill="${lc}"/>` +
+      `<ellipse cx="178.1" cy="104.2" rx="11" ry="5.0" transform="rotate(-63.3 178.1 104.2)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="39.2" cy="94.1" rx="12" ry="5.5" transform="rotate(256.7 39.2 94.1)" fill="${lc}"/>` +
+      `<ellipse cx="56.8" cy="90.0" rx="11" ry="5.0" transform="rotate(256.7 56.8 90.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="200.8" cy="94.1" rx="12" ry="5.5" transform="rotate(-76.7 200.8 94.1)" fill="${lc}"/>` +
+      `<ellipse cx="183.2" cy="90.0" rx="11" ry="5.0" transform="rotate(-76.7 183.2 90.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="37.0" cy="75.0" rx="12" ry="5.5" transform="rotate(270.0 37.0 75.0)" fill="${lc}"/>` +
+      `<ellipse cx="55.0" cy="75.0" rx="11" ry="5.0" transform="rotate(270.0 55.0 75.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="203.0" cy="75.0" rx="12" ry="5.5" transform="rotate(-90.0 203.0 75.0)" fill="${lc}"/>` +
+      `<ellipse cx="185.0" cy="75.0" rx="11" ry="5.0" transform="rotate(-90.0 185.0 75.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="39.2" cy="55.9" rx="12" ry="5.5" transform="rotate(283.3 39.2 55.9)" fill="${lc}"/>` +
+      `<ellipse cx="56.8" cy="60.0" rx="11" ry="5.0" transform="rotate(283.3 56.8 60.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="200.8" cy="55.9" rx="12" ry="5.5" transform="rotate(-103.3 200.8 55.9)" fill="${lc}"/>` +
+      `<ellipse cx="183.2" cy="60.0" rx="11" ry="5.0" transform="rotate(-103.3 183.2 60.0)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="45.8" cy="37.7" rx="12" ry="5.5" transform="rotate(296.7 45.8 37.7)" fill="${lc}"/>` +
+      `<ellipse cx="61.9" cy="45.8" rx="11" ry="5.0" transform="rotate(296.7 61.9 45.8)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="194.2" cy="37.7" rx="12" ry="5.5" transform="rotate(-116.7 194.2 37.7)" fill="${lc}"/>` +
+      `<ellipse cx="178.1" cy="45.8" rx="11" ry="5.0" transform="rotate(-116.7 178.1 45.8)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="56.4" cy="21.6" rx="12" ry="5.5" transform="rotate(310.0 56.4 21.6)" fill="${lc}"/>` +
+      `<ellipse cx="70.2" cy="33.2" rx="11" ry="5.0" transform="rotate(310.0 70.2 33.2)" fill="${lc}" opacity="0.88"/>` +
+      `<ellipse cx="183.6" cy="21.6" rx="12" ry="5.5" transform="rotate(-130.0 183.6 21.6)" fill="${lc}"/>` +
+      `<ellipse cx="169.8" cy="33.2" rx="11" ry="5.0" transform="rotate(-130.0 169.8 33.2)" fill="${lc}" opacity="0.88"/>`;
+    return `<svg width="88" height="88" viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="og${num}" cx="32%" cy="26%" r="72%">
+    <radialGradient id="og${num}" cx="33%" cy="27%" r="70%">
       <stop offset="0%" stop-color="${c1}"/>
       <stop offset="100%" stop-color="${c2}"/>
     </radialGradient>
-    <radialGradient id="ig${num}" cx="32%" cy="26%" r="72%">
+    <radialGradient id="ig${num}" cx="33%" cy="27%" r="70%">
       <stop offset="0%" stop-color="${ic1}"/>
       <stop offset="55%" stop-color="${ic2}"/>
       <stop offset="100%" stop-color="${c2}"/>
     </radialGradient>
   </defs>
-  ${wreath(lc)}
-  <circle cx="110" cy="70" r="44" fill="url(#og${num})"/>
-  <circle cx="110" cy="70" r="34" fill="url(#ig${num})"/>
-  <ellipse cx="97" cy="56" rx="14" ry="9" fill="white" opacity="0.25" transform="rotate(-25 97 56)"/>
-  <text x="110" y="84" font-size="36" text-anchor="middle" fill="${nc}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${num}</text>
+  ${w}
+  <circle cx="120" cy="75" r="48" fill="url(#og${num})"/>
+  <circle cx="120" cy="75" r="37" fill="url(#ig${num})"/>
+  <ellipse cx="107" cy="61" rx="15" ry="9" fill="white" opacity="0.22" transform="rotate(-25 107 61)"/>
+  <text x="120" y="91" font-size="40" text-anchor="middle" fill="${nc}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${num}</text>
 </svg>`;
   }
-
   const rankIcons = [
-    makeMedal(1,'#FFE255','#CC8800','#FFF8A0','#F5AA00','#7A3D00','#3DAA55'),
-    makeMedal(2,'#EEEEEE','#8888A0','#FAFAFF','#C0C0CC','#404058','#44AA66'),
-    makeMedal(3,'#FFAA33','#C05500','#FFD888','#E07000','#6A2800','#3DAA55'),
-    makeMedal(4,'#AADD44','#559900','#DDEEA0','#88CC22','#224400','#44AA55'),
+    makeMedal(1,'#FFE255','#D08800','#FFF8A0','#F0AA00','#7A3A00','#3DAA55'),
+    makeMedal(2,'#F0F0F0','#909090','#FAFAFA','#C8C8C8','#404040','#44AA66'),
+    makeMedal(3,'#FFAA33','#CC5500','#FFD888','#E07800','#662200','#3DAA55'),
+    makeMedal(4,'#AADE44','#559900','#DDEEA0','#88CC22','#224400','#44AA55'),
     makeMedal(5,'#66BBFF','#1166CC','#BBEEFF','#44AAEE','#003366','#3399AA'),
   ];
-  // ===== จบส่วน rankIcons =====
+  // ===== จบ rankIcons =====
 
   const ranked = data.map(s => ({ ...s, avg: getColF(s,months)||0 }))
     .filter(s => s.avg > 0).sort((a,b) => b.avg-a.avg).slice(0,5);
 
   document.getElementById('top5List').innerHTML = ranked.map((s,i) => `
     <div class="top5-item">
-      <div style="width:80px;height:80px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+      <div style="width:88px;height:88px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
         ${rankIcons[i]}
       </div>
       <div class="top5-info">
