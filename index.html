@@ -481,63 +481,40 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 function renderTop5(data, months) {
-  // ===== rankIcons — pre-computed arc positions, viewBox 240x150 =====
-  function makeMedal(num, c1, c2, ic1, ic2, nc, lc) {
-    const w =
-      `<ellipse cx="56.4" cy="128.4" rx="12" ry="5.5" transform="rotate(230.0 56.4 128.4)" fill="${lc}"/>` +
-      `<ellipse cx="70.2" cy="116.8" rx="11" ry="5.0" transform="rotate(230.0 70.2 116.8)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="183.6" cy="128.4" rx="12" ry="5.5" transform="rotate(-50.0 183.6 128.4)" fill="${lc}"/>` +
-      `<ellipse cx="169.8" cy="116.8" rx="11" ry="5.0" transform="rotate(-50.0 169.8 116.8)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="45.8" cy="112.3" rx="12" ry="5.5" transform="rotate(243.3 45.8 112.3)" fill="${lc}"/>` +
-      `<ellipse cx="61.9" cy="104.2" rx="11" ry="5.0" transform="rotate(243.3 61.9 104.2)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="194.2" cy="112.3" rx="12" ry="5.5" transform="rotate(-63.3 194.2 112.3)" fill="${lc}"/>` +
-      `<ellipse cx="178.1" cy="104.2" rx="11" ry="5.0" transform="rotate(-63.3 178.1 104.2)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="39.2" cy="94.1" rx="12" ry="5.5" transform="rotate(256.7 39.2 94.1)" fill="${lc}"/>` +
-      `<ellipse cx="56.8" cy="90.0" rx="11" ry="5.0" transform="rotate(256.7 56.8 90.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="200.8" cy="94.1" rx="12" ry="5.5" transform="rotate(-76.7 200.8 94.1)" fill="${lc}"/>` +
-      `<ellipse cx="183.2" cy="90.0" rx="11" ry="5.0" transform="rotate(-76.7 183.2 90.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="37.0" cy="75.0" rx="12" ry="5.5" transform="rotate(270.0 37.0 75.0)" fill="${lc}"/>` +
-      `<ellipse cx="55.0" cy="75.0" rx="11" ry="5.0" transform="rotate(270.0 55.0 75.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="203.0" cy="75.0" rx="12" ry="5.5" transform="rotate(-90.0 203.0 75.0)" fill="${lc}"/>` +
-      `<ellipse cx="185.0" cy="75.0" rx="11" ry="5.0" transform="rotate(-90.0 185.0 75.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="39.2" cy="55.9" rx="12" ry="5.5" transform="rotate(283.3 39.2 55.9)" fill="${lc}"/>` +
-      `<ellipse cx="56.8" cy="60.0" rx="11" ry="5.0" transform="rotate(283.3 56.8 60.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="200.8" cy="55.9" rx="12" ry="5.5" transform="rotate(-103.3 200.8 55.9)" fill="${lc}"/>` +
-      `<ellipse cx="183.2" cy="60.0" rx="11" ry="5.0" transform="rotate(-103.3 183.2 60.0)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="45.8" cy="37.7" rx="12" ry="5.5" transform="rotate(296.7 45.8 37.7)" fill="${lc}"/>` +
-      `<ellipse cx="61.9" cy="45.8" rx="11" ry="5.0" transform="rotate(296.7 61.9 45.8)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="194.2" cy="37.7" rx="12" ry="5.5" transform="rotate(-116.7 194.2 37.7)" fill="${lc}"/>` +
-      `<ellipse cx="178.1" cy="45.8" rx="11" ry="5.0" transform="rotate(-116.7 178.1 45.8)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="56.4" cy="21.6" rx="12" ry="5.5" transform="rotate(310.0 56.4 21.6)" fill="${lc}"/>` +
-      `<ellipse cx="70.2" cy="33.2" rx="11" ry="5.0" transform="rotate(310.0 70.2 33.2)" fill="${lc}" opacity="0.88"/>` +
-      `<ellipse cx="183.6" cy="21.6" rx="12" ry="5.5" transform="rotate(-130.0 183.6 21.6)" fill="${lc}"/>` +
-      `<ellipse cx="169.8" cy="33.2" rx="11" ry="5.0" transform="rotate(-130.0 169.8 33.2)" fill="${lc}" opacity="0.88"/>`;
-    return `<svg width="88" height="88" viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg">
+  // ===== rankIcons — ใช้ SVG โครงสร้างที่กำหนด =====
+  const medalColors = [
+    {outer:"#F7D774", inner:"#F2C55C", text:"#E08A2E"},
+    {outer:"#D1D5DB", inner:"#9CA3AF", text:"#4B5563"},
+    {outer:"#F6AD55", inner:"#DD6B20", text:"#7B341E"},
+    {outer:"#C6E377", inner:"#84CC16", text:"#166534"},
+    {outer:"#7DD3FC", inner:"#0284C7", text:"#1E3A8A"},
+  ];
+
+  const rankIcons = medalColors.map((c, idx) => {
+    const num = idx + 1;
+    return `<svg width="88" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="og${num}" cx="33%" cy="27%" r="70%">
-      <stop offset="0%" stop-color="${c1}"/>
-      <stop offset="100%" stop-color="${c2}"/>
-    </radialGradient>
-    <radialGradient id="ig${num}" cx="33%" cy="27%" r="70%">
-      <stop offset="0%" stop-color="${ic1}"/>
-      <stop offset="55%" stop-color="${ic2}"/>
-      <stop offset="100%" stop-color="${c2}"/>
+    <radialGradient id="mg${num}">
+      <stop offset="0%" stop-color="${c.outer}"/>
+      <stop offset="100%" stop-color="${c.inner}"/>
     </radialGradient>
   </defs>
-  ${w}
-  <circle cx="120" cy="75" r="48" fill="url(#og${num})"/>
-  <circle cx="120" cy="75" r="37" fill="url(#ig${num})"/>
-  <ellipse cx="107" cy="61" rx="15" ry="9" fill="white" opacity="0.22" transform="rotate(-25 107 61)"/>
-  <text x="120" y="91" font-size="40" text-anchor="middle" fill="${nc}" font-weight="900" font-family="Arial Black,Arial,sans-serif">${num}</text>
+  <g fill="#4CAF7D">
+    <ellipse cx="35" cy="50" rx="7" ry="14" transform="rotate(-30 35 50)"/>
+    <ellipse cx="28" cy="70" rx="7" ry="14" transform="rotate(-10 28 70)"/>
+    <ellipse cx="32" cy="90" rx="7" ry="14" transform="rotate(20 32 90)"/>
+    <ellipse cx="105" cy="50" rx="7" ry="14" transform="rotate(30 105 50)"/>
+    <ellipse cx="112" cy="70" rx="7" ry="14" transform="rotate(10 112 70)"/>
+    <ellipse cx="108" cy="90" rx="7" ry="14" transform="rotate(-20 108 90)"/>
+    <ellipse cx="55" cy="110" rx="7" ry="14" transform="rotate(50 55 110)"/>
+    <ellipse cx="70" cy="115" rx="7" ry="14"/>
+    <ellipse cx="85" cy="110" rx="7" ry="14" transform="rotate(-50 85 110)"/>
+  </g>
+  <circle cx="70" cy="70" r="42" fill="${c.outer}"/>
+  <circle cx="70" cy="70" r="32" fill="url(#mg${num})"/>
+  <text x="70" y="80" font-size="34" text-anchor="middle" fill="${c.text}" font-weight="bold" font-family="Arial,sans-serif">${num}</text>
 </svg>`;
-  }
-  const rankIcons = [
-    makeMedal(1,'#FFE255','#D08800','#FFF8A0','#F0AA00','#7A3A00','#3DAA55'),
-    makeMedal(2,'#F0F0F0','#909090','#FAFAFA','#C8C8C8','#404040','#44AA66'),
-    makeMedal(3,'#FFAA33','#CC5500','#FFD888','#E07800','#662200','#3DAA55'),
-    makeMedal(4,'#AADE44','#559900','#DDEEA0','#88CC22','#224400','#44AA55'),
-    makeMedal(5,'#66BBFF','#1166CC','#BBEEFF','#44AAEE','#003366','#3399AA'),
-  ];
+  });
   // ===== จบ rankIcons =====
 
   const ranked = data.map(s => ({ ...s, avg: getColF(s,months)||0 }))
