@@ -481,38 +481,40 @@ function updateBanner(data) {
 function clearAllActiveFilters() { activeKpiFilter = null; activeServiceUid = null; applyFilters(); }
 
 function renderTop5(data, months) {
-  // ===== rankIcons — ใช้ SVG โครงสร้างที่กำหนด =====
-  const medalColors = [
-    {outer:"#F7D774", inner:"#F2C55C", text:"#E08A2E"},
-    {outer:"#D1D5DB", inner:"#9CA3AF", text:"#4B5563"},
-    {outer:"#F6AD55", inner:"#DD6B20", text:"#7B341E"},
-    {outer:"#C6E377", inner:"#84CC16", text:"#166534"},
-    {outer:"#7DD3FC", inner:"#0284C7", text:"#1E3A8A"},
+  // ===== rankIcons — SVG โครงสร้างที่กำหนด =====
+  const cfg = [
+    { outer:'#F7D774', g1:'#FFE27A', g2:'#F5B700', tc:'#E08A2E' },
+    { outer:'#D1D5DB', g1:'#E5E7EB', g2:'#9CA3AF', tc:'#4B5563' },
+    { outer:'#FDBA74', g1:'#F6AD55', g2:'#DD6B20', tc:'#7B341E' },
+    { outer:'#BEF264', g1:'#C6E377', g2:'#84CC16', tc:'#166534' },
+    { outer:'#7DD3FC', g1:'#BAE6FD', g2:'#0284C7', tc:'#1E3A8A' },
   ];
 
-  const rankIcons = medalColors.map((c, idx) => {
-    const num = idx + 1;
+  const rankIcons = cfg.map((c, idx) => {
+    const n = idx + 1;
     return `<svg width="88" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="mg${num}">
-      <stop offset="0%" stop-color="${c.outer}"/>
-      <stop offset="100%" stop-color="${c.inner}"/>
+    <radialGradient id="rg${n}">
+      <stop offset="0%" stop-color="${c.g1}"/>
+      <stop offset="100%" stop-color="${c.g2}"/>
     </radialGradient>
   </defs>
   <g fill="#4CAF7D">
-    <ellipse cx="35" cy="50" rx="7" ry="14" transform="rotate(-30 35 50)"/>
-    <ellipse cx="28" cy="70" rx="7" ry="14" transform="rotate(-10 28 70)"/>
-    <ellipse cx="32" cy="90" rx="7" ry="14" transform="rotate(20 32 90)"/>
-    <ellipse cx="105" cy="50" rx="7" ry="14" transform="rotate(30 105 50)"/>
-    <ellipse cx="112" cy="70" rx="7" ry="14" transform="rotate(10 112 70)"/>
-    <ellipse cx="108" cy="90" rx="7" ry="14" transform="rotate(-20 108 90)"/>
-    <ellipse cx="55" cy="110" rx="7" ry="14" transform="rotate(50 55 110)"/>
-    <ellipse cx="70" cy="115" rx="7" ry="14"/>
-    <ellipse cx="85" cy="110" rx="7" ry="14" transform="rotate(-50 85 110)"/>
+    <ellipse cx="30" cy="50" rx="6" ry="12" transform="rotate(-40 30 50)"/>
+    <ellipse cx="22" cy="70" rx="6" ry="12" transform="rotate(-20 22 70)"/>
+    <ellipse cx="25" cy="90" rx="6" ry="12" transform="rotate(10 25 90)"/>
+    <ellipse cx="38" cy="108" rx="6" ry="12" transform="rotate(35 38 108)"/>
+    <ellipse cx="110" cy="50" rx="6" ry="12" transform="rotate(40 110 50)"/>
+    <ellipse cx="118" cy="70" rx="6" ry="12" transform="rotate(20 118 70)"/>
+    <ellipse cx="115" cy="90" rx="6" ry="12" transform="rotate(-10 115 90)"/>
+    <ellipse cx="102" cy="108" rx="6" ry="12" transform="rotate(-35 102 108)"/>
+    <ellipse cx="55" cy="120" rx="6" ry="12" transform="rotate(60 55 120)"/>
+    <ellipse cx="70" cy="125" rx="6" ry="12"/>
+    <ellipse cx="85" cy="120" rx="6" ry="12" transform="rotate(-60 85 120)"/>
   </g>
-  <circle cx="70" cy="70" r="42" fill="${c.outer}"/>
-  <circle cx="70" cy="70" r="32" fill="url(#mg${num})"/>
-  <text x="70" y="80" font-size="34" text-anchor="middle" fill="${c.text}" font-weight="bold" font-family="Arial,sans-serif">${num}</text>
+  <circle cx="70" cy="65" r="38" fill="${c.outer}"/>
+  <circle cx="70" cy="65" r="30" fill="url(#rg${n})"/>
+  <text x="70" y="75" font-size="34" text-anchor="middle" fill="${c.tc}" font-weight="bold" font-family="Arial,sans-serif">${n}</text>
 </svg>`;
   });
   // ===== จบ rankIcons =====
