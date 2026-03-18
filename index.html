@@ -81,7 +81,7 @@
   .top5-list{display:flex;flex-direction:column;gap:8px;flex:1;justify-content:space-between}
   .top5-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);transition:border-color .2s,background .3s;flex:1}
   .top5-item:hover{border-color:var(--green)}
-  .top5-badge{width:72px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .top5-badge{width:50px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
   .top5-info{flex:1;min-width:0}
   .top5-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .top5-company{font-size:11px;color:var(--text-muted)}
@@ -223,7 +223,7 @@ function makeTrophy(rank){
     {cup:'#CCFFDD',cup2:'#0D7A40',rim1:'#99EEBB',rim2:'#22AA66',base:'#085C2A',handle:'#118844',circle:'#EAFFF4',cs:'#118844',num:'#053A18',sp:'#99EEBB',sp2:'#DDFFF0',sp3:'#22AA66'},
   ];
   const c=cfg[rank-1];
-  return `<svg width="72" height="96" viewBox="0 0 88 116" xmlns="http://www.w3.org/2000/svg">
+  return `<svg width="48" height="64" viewBox="0 0 88 116" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <linearGradient id="trb${rank}" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0%" stop-color="${c.rim1}"/>
